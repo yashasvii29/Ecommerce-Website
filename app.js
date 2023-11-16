@@ -3,7 +3,8 @@ const app=express();
 const path=require('path');
 const mongoose=require('mongoose');
 const seedDB=require('./seed');
-const productRoutes=require('./routes/productRoutes');
+const productRoutes=require('./routes/productRoutes');  // isliye require kr rhe hai jisse y har incoming req ke liye path check krega .....neeche app.use(productRoutes) kiya hai
+const ejsMate=require('ejs-mate');// ejs mate is a templating engine which is used for layout
 
 mongoose.connect('mongodb://127.0.0.1:27017/Shopping-app')
 .then(()=>{
@@ -15,10 +16,12 @@ mongoose.connect('mongodb://127.0.0.1:27017/Shopping-app')
 })
 
 
-
-app.set('view engine','ejs');
+// ejs is a templating language
+app.engine('ejs',ejsMate);// app ko batayenge ki ejs file ko ejsMate engine read kr rhe hai
+app.set('view engine','ejs'); // express ke pass default engine present hai that is view engine and view engine ejs files ko dekh rha hai.....but hum default engine ke sath work nhi krna chahte so we'll install the engine => ejs mate(this is also a engine) hum ejs mate engine ka use krenge
 app.set('views',path.join(__dirname,'views'));
 app.use(express.static(path.join(__dirname,'public')));
+app.use(express.urlencoded({extended:true}));  //body object ke data ko dekhne ke liye we will use the middleware
 
 // seeding database(means add data to the database)
 // seedDB();

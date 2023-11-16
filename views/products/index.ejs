@@ -1,21 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-        <ul>
-           <% for(let item of products){  %>
-            <li>
-                <img src="<%=item.img%>" alt="">
-                <h3><%=item.name%></h3>
-                <h5><%=item.price%></h5>
-                <p><%=item.desc%></p>
-            </li>
-          <%  }  %>
-        </ul>
+<!-- boilerplate ko index page ke andar include krenge(but - nhi likhte) -->
+<% layout('layouts/boilerplate')  %>
+<%- include('../partials/navbar') %>
+
+<div class="row">
+ 
+    <% for(let item of products){  %>
+      <div class="col-lg-4 mt-3">
+        <div class="card mx-auto shadow" style="width: 18rem;">
+          <img src="<%=item.img%>" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h2 class="card-title"><%=item.name%></h2>
+            <h5 class="card-title">Rs: <%=item.price%></h5>
+            <p class="card-text"><%=item.desc%></p>
+            <a href="/products/<%=item._id%>"  class="btn btn-info">View Product</a>
+            <!-- jab view product button pr click krenge toh ek route hit hoga isliye index.ejs file m anchor tag m path denge -->
+          </div>
+        </div>
+        <!-- <div>
+          <img src="<%=item.img%>" alt="">
+             <h3><%=item.name%></h3>
+             <h5><%=item.price%></h5>
+             <p><%=item.desc%></p>
+        </div>     -->
+      </div>
     
-</body>
-</html>
+   <%  }  %>
+ 
+</div>
