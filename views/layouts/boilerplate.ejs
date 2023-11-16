@@ -8,9 +8,18 @@
     <title>Shopping Cart</title>
 </head>
 <body>
-    
+
+    <header>
+        <%- include('../partials/navbar') %>
+    </header>
     <!-- logic for body -->
-    <%- body %> 
+    <main class="container mt-5">
+        <%- body -%> 
+    </main>
+    
+    <footer>
+        <%- include('../partials/footer') %>
+    </footer>
     <!-- means body tag ka use kr rhe hai y ejs mate engine ki help se likh rhe hai -->
     <!-- beacuse har page ka layout same hoga only body tag ka content change hoga that'swhy humne boilerplate file banayi hai bcz kisi bhi page pr req send krenge toh har page ka layout same hoga (isliye boilerplate file banayi hai layout folder ke andar) ,only body ke andar ka content change hoga ... isliye scriplet tag ke andar body tag likha hai  -->
     

@@ -1,13 +1,14 @@
-<!-- boilerplate ko index page ke andar include krenge(but - nhi likhte) -->
-<% layout('layouts/boilerplate')  %>
-<%- include('../partials/navbar') %>
+<!-- har page pr layout function ke andar bolierplate.ejs file ka path pass krenge(but - nhi likhte) -->
+<!-- layout function ke neeche jo bhi likhenge wo body m pass ho jayega -->
+<% layout('layouts/boilerplate') %>
+
 
 <div class="row">
  
     <% for(let item of products){  %>
-      <div class="col-lg-4 mt-3">
-        <div class="card mx-auto shadow" style="width: 18rem;">
-          <img src="<%=item.img%>" class="card-img-top" alt="...">
+      <div class="col-lg-4 product-card height-300 mt-5">
+        <div class="card mx-auto text-center shadow" style="width:18rem;">
+          <img src="<%=item.img%>" class="card-img-top embed-responsive-item" alt="item image" height="190px">
           <div class="card-body">
             <h2 class="card-title"><%=item.name%></h2>
             <h5 class="card-title">Rs: <%=item.price%></h5>
@@ -27,3 +28,5 @@
    <%  }  %>
  
 </div>
+
+<!-- <%=  %>  iss tag ka use krte hai evaluate krne ke liye -->

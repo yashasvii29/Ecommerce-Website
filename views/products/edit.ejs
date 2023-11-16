@@ -7,25 +7,26 @@
         <form action="/products" method="POST">
             <div class="mb-3">
                 <label for="name" class="form-label">Name: </label>
-                <input type="text" class="form-control" name="name" id="naam" placeholder="Name of Product">
+                <input type="text" class="form-control" name="name" id="naam" placeholder="Name of Product" value="<%=foundProduct.name%>">
+                <!-- edit.ejs and new.ejs dono file same hogi but the only difference is edit.ejs file m form m value attribute add krenge because jo data pehle se hai use dekhne ke liye  (means edit form ke andar pehle se data fill hona chahiye,tabhi uss data ko edit krenge)-->
                 <!-- name attribute m vahi likhte hai jo humne schema m likha hai -->
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Image Url: </label>
-                <input type="text" class="form-control" name="img" id="imge" placeholder="Image URL of Product">
+                <input type="text" class="form-control" name="img" id="imge" placeholder="Image URL of Product" value="<%=foundProduct.img%>">
             </div>
             <div class="mb-3">
                 <label for="paisa" class="form-label">Price: </label>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Rs. </span>
-                    <input class="form-control" type="number" name="price" id="paisa" step="any" placeholder="Price of Product">
+                    <input class="form-control" type="number" name="price" id="paisa" step="any" placeholder="Price of Product" value="<%=foundProduct.price%>">
                 </div>
             </div>
             <div class="mb-3">
                 <label for="desc" class="form-label">Description: </label>
-                <textarea class="form-control"  name="desc" id="des" rows="5" placeholder="Description of Product"></textarea>
+                <textarea class="form-control"  name="desc" id="des" rows="5" placeholder="Description of Product" value="<%=foundProduct.desc%>"></textarea>
             </div>
-            <button type="submit" class="btn btn-sm btn-success">Add Product</button>
+            <button type="submit" class="btn btn-sm btn-success">Edit Product</button>
             <!-- add product button pr click krte hi post request jayegi /products pr jo humne form define kiya hai in action attribute-->
         </form>
     </div>

@@ -43,6 +43,12 @@ router.get('/products/:id',async(req,res)=>{
 })
 // if kisi chij ko show krna hai then we'll always send get request
 
+// 5th route=> show the form to edit the product(particular product)
+router.get('/products/:id/edit',async(req,res)=>{
+    let {id}=req.params;
+    let foundProduct= await Product.findById(id);
+    res.render('products/edit',{foundProduct});
+})
 
 
 module.exports=router;// router ko export kr rhe hai toh app.js file ke andar require krenge

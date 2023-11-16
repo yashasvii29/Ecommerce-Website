@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname,'public')));
 app.use(express.urlencoded({extended:true}));  //body object ke data ko dekhne ke liye we will use the middleware
 
 // seeding database(means add data to the database)
-// seedDB();
+//  seedDB();
 // but seedDB function ko ek baar run krne ke baad just comment krna padega otherwise y always data ko seed krta rehega means database m data add krta rahega
 
 app.use(productRoutes);// so that har incoming request ke liye path check hoga
