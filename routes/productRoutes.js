@@ -61,7 +61,16 @@ router.patch('/products/:id',async(req,res)=>{
     let {id} =req.params;
     let {name,img,price,desc}=req.body;
     await Product.findByIdAndUpdate(id,{name,img,price,desc});// Product model(database) ke andar se uss product ko find krenge jise edit kiya hai ById and update kr denge
-    res.redirect(`/products/${id}`);
+    res.redirect(`/products/${id}`);// id ko evaluate krne ke liye backtick ka use kiya h ...product ko edit krne ke baad (means edit product button pr click krte hi usi particular product pr redirect kr jayenge jise edit kiya h isliye redirect method m uss product ki id di h)
 
 })
+// 7th route=> to delete a particular product(delete krne ke liye post req ko delete req m override krenge means method override krenge and req send krne ke liye hume form ki need hoti hai so we will make delete form in the indes.ejs file)
+// database ke andar se product delete krna hai means post req jayegi but hum method override krenge...post req ko delete req m override kr denge and we will send delete request and product delete krne ke baad redirect krenge
+
+router.delete('/products/:id',async(req,res)=>{
+    let {id} =req.params;
+    await Product.findByIdAndDelete(id);
+    res.redirect('/products');
+})
+
 module.exports=router;// router ko export kr rhe hai toh app.js file ke andar require krenge

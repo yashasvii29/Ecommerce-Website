@@ -15,6 +15,9 @@
             <p class="card-text"><%=item.desc%></p>
             <a href="/products/<%=item._id%>"  class="btn btn-info">View Product</a>
             <!-- jab view product button pr click krenge toh ek route hit hoga isliye index.ejs file m anchor tag m path denge -->
+            <form class="d-inline-block" action="/products/<%=item._id%>?_method=DELETE" method="POST">
+              <button class="btn btn-sm btn-danger ">Delete</button>
+            </form>
           </div>
         </div>
         <!-- <div>
