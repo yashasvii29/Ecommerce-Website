@@ -23,6 +23,7 @@ router.get('/product/new',(req,res)=>{
     // response m new form show hoga
 })
 //3rd route=> to add the new product to database and then redirect to the /products page
+ //add product button pr click krte hi post request jayegi /products pr jo humne form define kiya hai in action attribute
 router.post('/products', async (req,res)=>{
     // jab form submit hoga toh sara data req ki body m milega ....toh unn sabhi data ko object ke andar destructure krenge
     let {name,img,price,desc}=req.body;  // body object ke data ko dekhne ke liye we will use the middleware app.use(express.urlencoded)
@@ -49,6 +50,18 @@ router.get('/products/:id/edit',async(req,res)=>{
     let foundProduct= await Product.findById(id);
     res.render('products/edit',{foundProduct});
 })
+// product m edit kr rhe hai(form ke andar edit kr he hai) means database ke andar changes kr rhe hai so we'll send patch req because edit means partial change (partial change ke liye we'll send patch req)
+// but form ke andar patch req nhi hoti ...form can send only get or post req
+// database m changes kr rhe hai toh post req ko override kr denge patch req m with the help of method override package
+// install the package method override=> npm i method override  then require in the app.js file
 
+// 6th route=> to edit the product in database(means Product model m)
+// jab edit product button pr click krenge toh patch req jayegi iss url pr  /products/:id/edit
+router.patch('/products/:id',async(req,res)=>{
+    let {id} =req.params;
+    let {name,img,price,desc}=req.body;
+    await Product.findByIdAndUpdate(id,{name,img,price,desc});// Product model(database) ke andar se uss product ko find krenge jise edit kiya hai ById and update kr denge
+    res.redirect(`/products/${id}`);
 
+})
 module.exports=router;// router ko export kr rhe hai toh app.js file ke andar require krenge

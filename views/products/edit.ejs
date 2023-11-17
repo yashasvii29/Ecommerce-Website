@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-6 mx-auto">
-        <form action="/products" method="POST">
+        <form action="/products/<%=foundProduct._id%>?_method=PATCH" method="POST">
             <div class="mb-3">
                 <label for="name" class="form-label">Name: </label>
                 <input type="text" class="form-control" name="name" id="naam" placeholder="Name of Product" value="<%=foundProduct.name%>">
@@ -24,10 +24,10 @@
             </div>
             <div class="mb-3">
                 <label for="desc" class="form-label">Description: </label>
-                <textarea class="form-control"  name="desc" id="des" rows="5" placeholder="Description of Product" value="<%=foundProduct.desc%>"></textarea>
+                <textarea class="form-control"  name="desc" id="des" rows="5" placeholder="Description of Product"><%=foundProduct.desc%></textarea>
             </div>
             <button type="submit" class="btn btn-sm btn-success">Edit Product</button>
-            <!-- add product button pr click krte hi post request jayegi /products pr jo humne form define kiya hai in action attribute-->
+            <!-- edit product button pr click krte hi patch request jayegi /products/:id/edit pr jo humne form define kiya hai in action attribute-->
         </form>
     </div>
 </div>

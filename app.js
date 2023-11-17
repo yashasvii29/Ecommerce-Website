@@ -5,7 +5,8 @@ const mongoose=require('mongoose');
 const seedDB=require('./seed');
 const productRoutes=require('./routes/productRoutes');  // isliye require kr rhe hai jisse y har incoming req ke liye path check krega .....neeche app.use(productRoutes) kiya hai
 const ejsMate=require('ejs-mate');// ejs mate is a templating engine which is used for layout
-
+const methodOverride =require('method-override');// iski help se post req ko patch req m override kr denge
+// method override ko require krne ke baad iska miidleware likhte hai _method
 mongoose.connect('mongodb://127.0.0.1:27017/Shopping-app')
 .then(()=>{
     console.log("DB Connected successfully")
@@ -22,6 +23,7 @@ app.set('view engine','ejs'); // express ke pass default engine present hai that
 app.set('views',path.join(__dirname,'views'));
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.urlencoded({extended:true}));  //body object ke data ko dekhne ke liye we will use the middleware
+app.use(methodOverride('_method'));
 
 // seeding database(means add data to the database)
 //  seedDB();
