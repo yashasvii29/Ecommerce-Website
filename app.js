@@ -4,6 +4,7 @@ const path=require('path');
 const mongoose=require('mongoose');
 const seedDB=require('./seed');
 const productRoutes=require('./routes/productRoutes');  // isliye require kr rhe hai jisse y har incoming req ke liye path check krega .....neeche app.use(productRoutes) kiya hai
+const reviewRoutes=require('./routes/reviewRoutes');
 const ejsMate=require('ejs-mate');// ejs mate is a templating engine which is used for layout
 const methodOverride =require('method-override');// iski help se post req ko patch req m override kr denge
 // method override ko require krne ke baad iska miidleware likhte hai _method
@@ -30,7 +31,7 @@ app.use(methodOverride('_method'));
 // but seedDB function ko ek baar run krne ke baad just comment krna padega otherwise y always data ko seed krta rehega means database m data add krta rahega
 
 app.use(productRoutes);// so that har incoming request ke liye path check hoga
-
+app.use(reviewRoutes);
 app.listen(8080,()=>{
     console.log("server connected at port 8080");
 })

@@ -19,8 +19,50 @@
           </div>
         </div>
       </div>
+      <!-- ek particular product ko review dena hai toh form banayenge and form ke through review(input) denge -->
+      <!-- ek particular product ko review dena hai toh pehle uss particular product pr jayenge means show page pr jayenge then form m review denge -->
+      <!-- product ko review de rhe h means database m changes kr rhe hai so we'll send post req -->
       <div class="col-lg-6">
         <h1 class="display-5">Leave a Reviews</h1>
+        <form action="/products/<%=foundProduct._id%>/review" method="POST">
+          <div>
+            <!-- <label class="form-label" for="stars">Rating:</label> -->
+            <fieldset class="starability-basic">
+              <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
+              <input type="radio" id="first-rate1" name="rating" value="1" />
+              <label for="first-rate1" title="Terrible">1 star</label>
+              <input type="radio" id="first-rate2" name="rating" value="2" />
+              <label for="first-rate2" title="Not good">2 stars</label>
+              <input type="radio" id="first-rate3" name="rating" value="3" />
+              <label for="first-rate3" title="Average">3 stars</label>
+              <input type="radio" id="first-rate4" name="rating" value="4" />
+              <label for="first-rate4" title="Very good">4 stars</label>
+              <input type="radio" id="first-rate5" name="rating" value="5" />
+              <label for="first-rate5" title="Amazing">5 stars</label>
+            </fieldset>
+            <!-- <input class="form-control" type="range" min="0" max="5" name="rating" id="stars"> -->
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="comment">Comment</label>
+            <textarea class="form-control" row="3" name="comment" id="comment"></textarea>
+            </div>
+          <button class="btn btn-sm btn-success">Add Review</button>
+        </form>
+        <div class="my-3">
+          <% for(let review of foundProduct.reviews){ %>
+            <div class="card mt-3">
+                <p class="starability-result" data-rating="<%=review.rating%>">
+                  Rated: <%=review.rating%> stars
+                </p>
+              <!-- <div class="card-header">Rating: <%=review.rating %></div> -->
+              <div class="card-body">
+                <p class="card-text">Comment: <%=review.comment%></p>
+                <a href="#" class="btn btn-primary">Delete</a>
+              </div>
+            </div>
+          <% } %>
+        </div>
     </div>
     <!-- jab view product button pr click krenge toh ek route hit hoga isliye index.ejs file m anchor tag m path denge -->
 </div>
+<!-- name attribute m vahi likhte hai jo humne schema m define kiya hai -->

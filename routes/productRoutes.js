@@ -25,7 +25,7 @@ router.get('/product/new',(req,res)=>{
 //3rd route=> to add the new product to database and then redirect to the /products page
  //add product button pr click krte hi post request jayegi /products pr jo humne form define kiya hai in action attribute
 router.post('/products', async (req,res)=>{
-    // jab form submit hoga toh sara data req ki body m milega ....toh unn sabhi data ko object ke andar destructure krenge
+    // jab form submit hoga toh sara data req ki body m milega ....toh unn sabhi data ko object ke andar destructure krenge....(object ke andar vahi name likhte h jo humne schema m define kiya h)
     let {name,img,price,desc}=req.body;  // body object ke data ko dekhne ke liye we will use the middleware app.use(express.urlencoded)
     // database ke andar new product ko add krenge...means Product model ke andar new product create krenge
     await Product.create({name,img,price,desc})//  create mongodb ka method hai and y promise return krta hai to promise ki chaining se bachne ke liye we will use async and await
@@ -38,9 +38,9 @@ router.post('/products', async (req,res)=>{
 router.get('/products/:id',async(req,res)=>{
     // id params object se milegi toh id ko object ke andar destructure krenge
     let {id} =req.params; // isse id mil jayegi
-    // jo id hume mili hai use database ke andar find kenge means Product model ke andar find krenge
-    let foundProduct= await Product.findById(id); // id find krne ke liye we'll use the method findById()
-    res.render('products/show',{foundProduct});
+    // product model ke andar se product find krenge with the help of id
+    let foundProduct= await Product.findById(id).populate('reviews'); //   product find krne ke baad use populate krenge(show krenge) reviews array ke sath means product ko show krenge reviews ke sath
+    res.render('products/show',{foundProduct});// res m show page show hoga and uss show page wo product(foundProduct) bhej rhe hai
 })
 // if kisi chij ko show krna hai then we'll always send get request
 

@@ -22,6 +22,7 @@ const productSchema = new mongoose.Schema({
     // array ke andar aisi property apply krenge jisse hum ek review ko dusre review se differentiate kr sake ...property is objectId(_id)
     // 1 to many relationship ke case m complete data store nhi krte...only objectId(_id) store krte hai
     // har element ki unique object id hoti hai(means _id)
+    // reviews array m objectId store krenge(review ki object id)
     reviews:[
         {
             type: mongoose.Schema.Types.ObjectId,
