@@ -69,7 +69,8 @@ router.patch('/products/:id',async(req,res)=>{
 
 router.delete('/products/:id',async(req,res)=>{
     let {id} =req.params;
-    await Product.findByIdAndDelete(id);
+    const product = await Product.findById(id);
+    await Product.findByIdAndDelete(id);// findByIdAndDelete jab mongodb ka y method run hoga toh iss method ke behind the scene ek middleware chalega(means mongodb ka y method behind the scene middleware chala rha hai) jo Product ke schema pr apply kiya hai in Product.js file(because product ka schema model ke andar hota hai)
     res.redirect('/products');
 })
 

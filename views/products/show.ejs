@@ -51,7 +51,12 @@
         <div class="my-3">
           <% for(let review of foundProduct.reviews){ %>
             <div class="card mt-3">
-                <p class="starability-result" data-rating="<%=review.rating%>">
+              <p class="card-title mx-3">
+                <% if(review.createdAt){ %>
+                   <%= review.createdAt.toDateString() %>
+                <% } %>
+               </p>
+                <p class="starability-result mx-3" data-rating="<%=review.rating%>">
                   Rated: <%=review.rating%> stars
                 </p>
               <!-- <div class="card-header">Rating: <%=review.rating %></div> -->

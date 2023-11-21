@@ -25,7 +25,7 @@ router.post('/products/:id/review',async(req,res)=>{
     await review.save();// save mongodb ka method hai it returns a promise and promise ki chaining se bachne ke liye we will use async and await
     await product.save();// save method is used to save (add) the document to the database
     res.redirect(`/products/${id}`);
-    res.send('reviews stored successfully');
+    // res.send('reviews stored successfully');
     // hum chahte hai page pr redirect krne ke baad uss page pr reviews show ho jo humne uss product ko diye hai...... Product ke model(database) se reviews show krne hai means dusri collection se render krna hai so we will use populate(populate means show krna)...reviews array ke andar jo objectid hai usse data populate krenge
     // hum chahte hai jab hum ek particular product ko dekhe toh uss product ke corresponding(side se) sare reviews(uss particular product ke sabhi reviews) show ho jaye(populate ho jaye)..means jab ek particular product ko show krenge toh uss product ke sath sabhi reviews bhi show kr denge(it is known as populate) toh productRoutes.js file m show product ka jo route likha tha usme Product.findById().populate('reviews') populate method add kr denge and parenthesis m reviews array ka name pass kiya hai
     // jab ek collection se dusre collection ka data chahiye so we will use populate(means hum reviews ke collection pr kaam kr rhe hai but hume products ke collection se data chahiye in that case we will use populate)
