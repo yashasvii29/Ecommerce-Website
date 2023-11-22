@@ -40,6 +40,7 @@ productSchema.post('findOneAndDelete',async function(product){ // y callback fun
     if(product.reviews.length>0){
        await Review.deleteMany({_id:{$in:product.reviews}})// reviews ke array m har id ko check krenge and id match hone pr uss review ko delete kr denge from reviews Collection(means reviews ke model m se database se)
     }
+    // important=> pre and post middleware ka use schema ke baad and model se pehle krenge
     // As a developer hum production m isi tarah se delete krte hai(schema par middleware apply krte hai)
     // post middleware ka use isliye kr rhe hai beacuse we want jab hum product ko delete kre toh uske reviews bhi delete jo jaye(reviews collection se bhi means database se bhi delete ho jaye) so we'll use the middleware(mongoose ke middleware)=> pre and post
     // pre and post schema ke middleware hai y schema ke upar apply hote hai(documentation=>mongoosejs.com=>click on middleware(vahan pr pre and post middleware honge))

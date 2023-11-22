@@ -4,30 +4,81 @@
 
 <div class="row">
     <div class="col-6 mx-auto">
-        <form action="/products" method="POST">
+        <form action="/products" method="POST" class="needs-validation" novalidate   >
+            <!-- novalidate y attibute default validation ko rok dega -->
             <div class="mb-3">
                 <label for="name" class="form-label">Name: </label>
-                <input type="text" class="form-control" name="name" id="naam" placeholder="Name of Product">
+                <input type="text" class="form-control" name="name" id="naam" placeholder="Name of Product" required>
+                 <!-- looks good validator -->
+                <div class="valid-feedback">
+                    Looks good!
+                  </div>
+                  <!-- error validator -->
+                  <div class="invalid-feedback">
+                    Please choose a product name.
+                  </div>
                 <!-- name attribute m vahi likhte hai jo humne schema m likha hai -->
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Image Url: </label>
-                <input type="text" class="form-control" name="img" id="imge" placeholder="Image URL of Product">
+                <!-- validation ke liye we will add required attribute and required is a defaukt validator-->
+                <!-- required is a client side validation and csv browser pr kr rhe hai bcz form browser pr submit hoga -->
+                <input type="text" class="form-control" name="img" id="imge" placeholder="Image URL of Product" required>
+                <!-- looks good validator -->
+                <div class="valid-feedback">
+                    Looks good!
+                  </div>
+                  <!-- error validator -->
+                  <div class="invalid-feedback">
+                    Please choose a image url.
+                  </div>
             </div>
             <div class="mb-3">
                 <label for="paisa" class="form-label">Price: </label>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Rs. </span>
-                    <input class="form-control" type="number" name="price" id="paisa" step="any" placeholder="Price of Product">
+                    <input class="form-control" type="number" name="price" id="paisa" step="any" placeholder="Price of Product" required>
+                    <!-- looks good validator -->
+                <div class="valid-feedback">
+                    Looks good!
+                  </div>
+                  <!-- error validator -->
+                  <div class="invalid-feedback">
+                    Please choose a price.
+                  </div>
                 </div>
             </div>
             <div class="mb-3">
                 <label for="desc" class="form-label">Description: </label>
-                <textarea class="form-control"  name="desc" id="des" rows="5" placeholder="Description of Product"></textarea>
+                <textarea class="form-control"  name="desc" id="des" rows="5" placeholder="Description of Product" required></textarea>
             </div>
             <button type="submit" class="btn btn-sm btn-success">Add Product</button>
             <!-- add product button pr click krte hi post request jayegi /products pr jo humne form define kiya hai in action attribute-->
         </form>
     </div>
 </div>
+<script>
+    (function () {
+        'use strict'
+      
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+      
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+          .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+              if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+              }
+      
+              form.classList.add('was-validated')
+            }, false)
+          })
+      })()
+</script>
 <!-- jab bhi koi new file banayenge like new.ejs, show.ejs...toh usme  index.ejs file ka complete code copy paste kr denge then jo code change krna hai use change kr denge -->
+<!-- for server side validation we need joi ans for server side validation we will make new schema according to the joi -->
+<!-- documentation...joi.dev -->
+<!-- we have to install the joi -->
