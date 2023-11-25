@@ -93,8 +93,14 @@
       })()
 </script>
 <!-- jab bhi koi new file banayenge like new.ejs, show.ejs...toh usme  index.ejs file ka complete code copy paste kr denge then jo code change krna hai use change kr denge -->
+<!-- server side valiadtion backend m hota hai ..hum frontend m toh ja sakte hai but backend m nhi ja sakte so we will use joi package for ssv-->
 <!-- for server side validation we need joi and for server side validation we will make new schema according to the joi -->
-<!-- documentation...joi.dev -->
-<!-- we have to install the joi -->
+<!-- documentation...joi.dev(joi is a schema descriptive language means y schema ki help se kaam krta hai and it is very powerful...it is a npm package) -->
+<!-- joi hamare data ko validate krta hai(y data validator ka kaam krta h)-->
+<!--joi is a npm package so we'll to install the joi and then require-->
+<!-- there are 2 steps for ssv=> 1.joi ke liye alag se schema banate hai and uss schema ke sath kaam krte hai -->
+<!-- 2. jahan pr bhi  schema ko rakhenge ise validate kreneg-->
+<!-- means pehle schema ko define krenge in schema.js file and export krenge then schema ko  validate krenge  in middleware.js file and export krenge and routes folfer ke andar productRoutes and reviewRoutes m middleware(validateProduct and validatereview ) ko require krenge and then router m use krenge for server side vlaidation-->
+<!-- product ka schema alag hai and joi ka schema alag hai -->
 
  

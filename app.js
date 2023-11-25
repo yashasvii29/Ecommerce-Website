@@ -37,11 +37,6 @@ app.use(reviewRoutes);
 app.listen(8080,()=>{
     console.log("server connected at port 8080");
 })
-//  2 types of storage client side and server side
-// cookies is a client side storage(browser)
-// in client side storage there are 2 things cookiews and session storage
-// in server side storage there is only one thing session
-// we never stored important information inside the cookies because cookies are less secured
-// cookies are object(key-value pair) ja hum kisi url pr req send krte hai pehle wo cookies banata hai and again jab usi url pr req send krte h toh uss url pr req ke sath cookies bhi jati h
-// cookies are for personalized data and for management
-// cookie-parser ka use krenge to work with the cookies
+
+
+// req means client and res means server 

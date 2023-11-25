@@ -1,13 +1,14 @@
 const express=require('express');
 const Product=require('../models/Product');
 // Product model ko isliye require kr rhe hai kyunki products show krne hai toh Product model ke andar se products  find krenge and then display on the page
-
+const {validateProduct}=require('../middleware');
+// validateProduct middleware ko require kr rhe hai form middleware.js file
 // app method  applicaton ka complete instance hai ise export nhi kr sakte
 // we cant write app.get and app.post here
 // express provide mini instance (router) we will use router 
 const router =express.Router()// mini instance
 // 1st route=> to show all the products
-// har router m try catch ka use krenge to handle the error
+// har router m try catch block ka use krenge to handle the error
 router.get('/products',async(req,res)=>{
     try{
         //1... Database m se data show krne ke liye pehle uss model(collection) ke anadr se data (products array) find krenge then data ko index page pr bhejenge
@@ -28,18 +29,21 @@ router.get('/products',async(req,res)=>{
 // 2nd route=> to show the form for new product
 router.get('/product/new',(req,res)=>{
     try{
-        res.render('products/new')
-    // response m new form show hoga
+         res.render('products/new')
+       
+    // // response m new form show hoga
     }
     
     catch(e){
-        // e object m error hota hai toh err ko catch krenge and e object m message field bhi hota hai toh error ke message ko bhi bhejenge
         res.status(500).render('error',{err:e.message});
-    }
+    //     // e object m error hota hai toh err ko catch krenge and e object m message field bhi hota hai toh error ke message ko bhi bhejenge
+        
+        
+     }
 })
 //3rd route=> to add the new product to database and then redirect to the /products page
  //add product button pr click krte hi post request jayegi /products pr jo humne form define kiya hai in action attribute
-router.post('/products', async (req,res)=>{
+router.post('/products', validateProduct, async (req,res)=>{ //  jab y route hit hoga /products toh validateProduct middleware chalega in middleware.js file and if product validate hone ke baad error nhi aaya toh uss file m next() chalega means iss route m jo callback fun hai validateProduct middleware ke baad wo run hoga
     try{
             // jab form submit hoga toh sara data req ki body m milega ....toh unn sabhi data ko object ke andar destructure krenge....(object ke andar vahi name likhte h jo humne schema m define kiya h)
             let {name,img,price,desc}=req.body;  // body object ke data ko dekhne ke liye we will use the middleware app.use(express.urlencoded)
