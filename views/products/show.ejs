@@ -1,9 +1,9 @@
 <!-- har page pr layout function ke andar bolierplate.ejs file ka path pass krenge(but - nhi likhte) -->
 <!-- layout function ke neeche jo bhi likhenge wo body m pass ho jayega -->
 <% layout('layouts/boilerplate') %>
-<div class="row">
- 
-   
+<%- include('../partials/flash') %>
+
+<div class="row"> 
       <div class="col-lg-6 mt-3">
         <div class="card mx-auto shadow" style="width: 18rem;">
           <img src="<%=foundProduct.img%>" class="card-img-top" alt="...">

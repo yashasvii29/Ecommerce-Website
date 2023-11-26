@@ -50,6 +50,7 @@ router.post('/products', validateProduct, async (req,res)=>{ //  jab y route hit
             // database ke andar new product ko add krenge...means Product model ke andar new product create krenge
             await Product.create({name,img,price,desc})//  create mongodb ka method hai and y promise return krta hai to promise ki chaining se bachne ke liye we will use async and await
             // database ke andar new product add hone ke baad /products page pr redirect krenge
+            req.flash('success','Product edited successfully');
             res.redirect('/products')// redirect means get req jayegi /products pr and sabhi products show ho jayenge with new product
     }
     catch(e){
@@ -65,7 +66,7 @@ router.get('/products/:id',async(req,res)=>{
     let {id} =req.params; // isse id mil jayegi
     // product model ke andar se product find krenge with the help of id
     let foundProduct= await Product.findById(id).populate('reviews'); //   product find krne ke baad use populate krenge(show krenge) reviews array ke sath means product ko show krenge reviews ke sath
-    res.render('products/show',{foundProduct});// res m show page show hoga and uss show page wo product(foundProduct) bhej rhe hai
+    res.render('products/show',{foundProduct,msg:req.flash('msg')});// res m show page show hoga and uss show page wo product(foundProduct) bhej rhe hai
 
     }
     catch(e){
@@ -102,6 +103,7 @@ router.patch('/products/:id',async(req,res)=>{
         let {id} =req.params;
     let {name,img,price,desc}=req.body;
     await Product.findByIdAndUpdate(id,{name,img,price,desc});// Product model(database) ke andar se uss product ko find krenge jise edit kiya hai ById and update kr denge
+    req.flash('success','Product edited successfully');// product m edit krne ke baad y success message flash hoga means display hoga/popup hoga message edited successfully
     res.redirect(`/products/${id}`);// id ko evaluate krne ke liye backtick ka use kiya h ...product ko edit krne ke baad (means edit product button pr click krte hi usi particular product pr redirect kr jayenge jise edit kiya h isliye redirect method m uss product ki id di h)
     }
     catch(e){
@@ -118,6 +120,7 @@ router.delete('/products/:id',async(req,res)=>{
         let {id} =req.params;
         const product = await Product.findById(id);
         await Product.findByIdAndDelete(id);// findByIdAndDelete jab mongodb ka y method run hoga toh iss method ke behind the scene ek middleware chalega(means mongodb ka y method behind the scene middleware chala rha hai) jo Product ke schema pr apply kiya hai in Product.js file(because product ka schema model ke andar hota hai)
+        req.flash('success','Product deleted successfully');
         res.redirect('/products');
     }
     catch(e){

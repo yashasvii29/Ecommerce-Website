@@ -28,6 +28,7 @@ app.get('/',(req,res)=>{
 })
 // signed cookies
 app.get('/getsignedcookies',(req,res)=>{
+    // res m cookies hoti hai means res object ke andar cookies hoti hai because jab client server pr req send krta hai toh res m cookies bhi jati hai
     // cookie set kr rhe h
     res.cookie('name','yashu',{signed:true});
     res.send("cookies sent successfully")
@@ -35,21 +36,21 @@ app.get('/getsignedcookies',(req,res)=>{
 })
 
 // cookies send kr rhe hai
-// app.get('/setcookies',(req,res)=>{
-//     // cookies set kr rhe hai ..key-value pair
-//     res.cookie('mode','dark');
-//     res.cookie('name','yashasvi');
-//     res.cookie('location','gla');
-//     res.send('server sent you cookies');
+app.get('/setcookies',(req,res)=>{
+    // cookies set kr rhe hai ..key-value pair
+    res.cookie('mode','dark');
+    res.cookie('name','yashasvi');
+    res.cookie('location','gla');
+    res.send('server sent you cookies');
     
-// })
+})
 // access all the cookies
-// app.get('/getcookies',(req,res)=> {
+app.get('/getcookies',(req,res)=> {
    
-//     let {mode,location,name}=req.cookies;
-//     res.send(`name is ${name},stay in ${location} and fav theme is ${mode}`);
+    let {mode,location,name}=req.cookies;
+    res.send(`name is ${name},stay in ${location} and fav theme is ${mode}`);
    
-// })
+})
 app.listen('5050',()=>{
     console.log("cookies running at port 5050 ")
 })
