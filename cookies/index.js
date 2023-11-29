@@ -12,8 +12,6 @@
 // So cookies are stateful but hum cookies ka use nhi krenge hum session ka use krenge beacuse cookies are not good, they are not secured(koi bhi inspect krke data ko dekh sakta hai)
 // If we wanted to use cookies then we will use signed cookies(signed cookies ke liye we will use cookie-parser)
 // session are more secured in comparison to cookies...cookies are less secured so hum session ka sue krenge(session is a server side storage)
-
-
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const app = express();

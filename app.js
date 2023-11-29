@@ -9,6 +9,9 @@ const methodOverride =require('method-override');// iski help se post req ko pat
 const cookieParser=require('cookie-parser');
 const flash=require('connect-flash'); // flash means display krna
 const session=require('express-session');
+const passport=require('passport');
+const LocalStrategy=require('passport-local');
+const User=require('../models/User');
 const productRoutes=require('./routes/productRoutes');  // isliye require kr rhe hai jisse y har incoming req ke liye path check krega .....neeche app.use(productRoutes) kiya hai
 const reviewRoutes=require('./routes/reviewRoutes');
 const authRoutes=require('./routes/authRoutes');
@@ -39,6 +42,9 @@ app.use(session(configSession)); // session ke middleware ka use kiya hai
 app.use(flash());// flash ke middleware ka use krenge (flash package)
 // flash means display krna(flash a message means display a message/popup a message)
 // req.flash() means flash message ko routes m add krenge jin routes pr req send krne pr message ko flash krana hai then neeche jo middleware use kiya hai vo krenge for flash a success message and error message for all the templates
+// passport ki cheezon ko app.js file m use krne ke liye passport ko initialise krna padega
+app.use(passport.initialize());
+app.use(passport.session()); //locally store krne ke liye session ka use krte h
 app.use((req,res,next)=>{
     res.locals.success=req.flash('success');
     res.locals.error=req.flash('error');
@@ -46,6 +52,10 @@ app.use((req,res,next)=>{
 // hume message ko har page pr means har template pr flash/popup/display krana hai ...if kisi kaam ko again and again krna hai means pehle edit page pr message ko flash karana hai then show page pr then new page pr then we will use locals(means hum cheezon ko local storage m store krte hai)...locals is a part of js
 // locals is a object which contain local variables and locals is available in response(res m locals object available hota hai) and they are available for the views rendered
 })
+// passport
+passport.use(new LocalStrategy(  // passport-local ka middleware use krenge from documentation 
+  
+  ));
 // seeding database(means add data to the database)
 //  seedDB();
 // but seedDB function ko ek baar run krne ke baad just comment krna padega otherwise y always data ko seed krta rehega means database m data add krta rahega
