@@ -1,7 +1,7 @@
 const express=require('express');
 const Product=require('../models/Product');
 // Product model ko isliye require kr rhe hai kyunki products show krne hai toh Product model ke andar se products  find krenge and then display on the page
-const {validateProduct}=require('../middleware');
+const {validateProduct,isLoggedIn}=require('../middleware');
 // validateProduct middleware ko require kr rhe hai form middleware.js file
 // app method  applicaton ka complete instance hai ise export nhi kr sakte
 // we cant write app.get and app.post here
@@ -9,7 +9,7 @@ const {validateProduct}=require('../middleware');
 const router =express.Router()// mini instance
 // 1st route=> to show all the products
 // har router m try catch block ka use krenge to handle the error
-router.get('/products',async(req,res)=>{
+router.get('/products',isLoggedIn,async(req,res)=>{
     try{
         //1... Database m se data show krne ke liye pehle uss model(collection) ke anadr se data (products array) find krenge then data ko index page pr bhejenge
     // 2...Product ke model(collection ) ke andar se products find krenge(means database m se data find krenge) and find() mongoose ka method hai (means db ka crud method hai) and y methods promise return krte hai ....promise ki chaining se bachne ke liye we will use async await
@@ -27,7 +27,7 @@ router.get('/products',async(req,res)=>{
 })
 
 // 2nd route=> to show the form for new product
-router.get('/product/new',(req,res)=>{
+router.get('/product/new',isLoggedIn,(req,res)=>{
     try{
          res.render('products/new')
        
@@ -43,7 +43,7 @@ router.get('/product/new',(req,res)=>{
 })
 //3rd route=> to add the new product to database and then redirect to the /products page
  //add product button pr click krte hi post request jayegi /products pr jo humne form define kiya hai in action attribute
-router.post('/products', validateProduct, async (req,res)=>{ //  jab y route hit hoga /products toh validateProduct middleware chalega in middleware.js file and if product validate hone ke baad error nhi aaya toh uss file m next() chalega means iss route m jo callback fun hai validateProduct middleware ke baad wo run hoga
+router.post('/products', validateProduct,isLoggedIn, async (req,res)=>{ //  jab y route hit hoga /products toh validateProduct middleware chalega in middleware.js file and if product validate hone ke baad error nhi aaya toh uss file m next() chalega means iss route m jo callback fun hai validateProduct middleware ke baad wo run hoga
     try{
             // jab form submit hoga toh sara data req ki body m milega ....toh unn sabhi data ko object ke andar destructure krenge....(object ke andar vahi name likhte h jo humne schema m define kiya h)
             let {name,img,price,desc}=req.body;  // body object ke data ko dekhne ke liye we will use the middleware app.use(express.urlencoded)
@@ -60,7 +60,7 @@ router.post('/products', validateProduct, async (req,res)=>{ //  jab y route hit
 })
 // pehle se likha hua code show ho rha hai toh enter tab
 // 4th route=> to show a particular product
-router.get('/products/:id',async(req,res)=>{
+router.get('/products/:id',isLoggedIn,async(req,res)=>{
     try{
         // id params object se milegi toh id ko object ke andar destructure krenge
     let {id} =req.params; // isse id mil jayegi
@@ -79,7 +79,7 @@ router.get('/products/:id',async(req,res)=>{
     
 
 // 5th route=> show the form to edit the product(particular product)
-router.get('/products/:id/edit',async(req,res)=>{
+router.get('/products/:id/edit',isLoggedIn,async(req,res)=>{ // isLoggedIn is a middleware iska use isliye kr rhe hai if user login hai tabhi products dekh sakta hai otherwsie nhi(isLoggedIn widdleware middleware.js file m banaya hai from the documentation of passport)
     try{
         let {id}=req.params;
         let foundProduct= await Product.findById(id);
@@ -98,7 +98,7 @@ router.get('/products/:id/edit',async(req,res)=>{
 
 // 6th route=> to edit the product in database(means Product model m)
 // jab edit product button pr click krenge toh patch req jayegi iss url pr  /products/:id/edit
-router.patch('/products/:id',async(req,res)=>{
+router.patch('/products/:id',isLoggedIn,async(req,res)=>{
     try{
         let {id} =req.params;
     let {name,img,price,desc}=req.body;
@@ -115,7 +115,7 @@ router.patch('/products/:id',async(req,res)=>{
 // 7th route=> to delete a particular product(delete krne ke liye post req ko delete req m override krenge means method override krenge and req send krne ke liye hume form ki need hoti hai so we will make delete form in the indes.ejs file)
 // database ke andar se product delete krna hai means post req jayegi but hum method override krenge...post req ko delete req m override kr denge and we will send delete request and product delete krne ke baad redirect krenge
 
-router.delete('/products/:id',async(req,res)=>{
+router.delete('/products/:id',isLoggedIn,async(req,res)=>{
     try{
         let {id} =req.params;
         const product = await Product.findById(id);

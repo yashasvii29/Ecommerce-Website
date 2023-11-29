@@ -11,7 +11,7 @@ const flash=require('connect-flash'); // flash means display krna
 const session=require('express-session');
 const passport=require('passport');
 const LocalStrategy=require('passport-local');
-const User=require('../models/User');
+const User=require('./models/User');
 const productRoutes=require('./routes/productRoutes');  // isliye require kr rhe hai jisse y har incoming req ke liye path check krega .....neeche app.use(productRoutes) kiya hai
 const reviewRoutes=require('./routes/reviewRoutes');
 const authRoutes=require('./routes/authRoutes');
@@ -45,7 +45,13 @@ app.use(flash());// flash ke middleware ka use krenge (flash package)
 // passport ki cheezon ko app.js file m use krne ke liye passport ko initialise krna padega
 app.use(passport.initialize());
 app.use(passport.session()); //locally store krne ke liye session ka use krte h
+// hum chahte hai user ko apne session ke andar serialize and deserialize kr sake so we will use these static methods from the documentation
+// use static serialize and deserialize of model for passport session support
+// copy both from the documentation => passport-local-mongoose npm
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 app.use((req,res,next)=>{
+    res.locals.currentUser = req.user;
     res.locals.success=req.flash('success');
     res.locals.error=req.flash('error');
     next();
@@ -53,9 +59,9 @@ app.use((req,res,next)=>{
 // locals is a object which contain local variables and locals is available in response(res m locals object available hota hai) and they are available for the views rendered
 })
 // passport
-passport.use(new LocalStrategy(  // passport-local ka middleware use krenge from documentation 
-  
-  ));
+// use static authenticate method of model in LocalStrategy
+passport.use(new LocalStrategy(User.authenticate())); // copy from the documentation => passport-local-mongoose npm
+
 // seeding database(means add data to the database)
 //  seedDB();
 // but seedDB function ko ek baar run krne ke baad just comment krna padega otherwise y always data ko seed krta rehega means database m data add krta rahega

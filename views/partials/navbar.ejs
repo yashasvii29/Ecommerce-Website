@@ -20,10 +20,22 @@
           </li>
         
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        <div class="d-flex" role="search">
+          <% if(!currentUser){ %>
+            <a class="text-dark nav-link " href="/login">Login</a>
+          <% } %>
+          <!-- login krne ke baad navbar pr only logout show hoga -->
+          <% else{  %>
+            <a href="" class="nav-link">
+              <i class="fa-solid fa-cart-shopping"></i>
+              <sup> <span class="badge bg-danger">2</span> </sup>
+            </a>
+            <a href="/logout" class="nav-link text-dark ">Logout</a>
+          <% } %>
+          <!-- logout krne ke baad navbar pr only login show hoga -->
+        </div>
       </div>
     </div>
 </nav>
+
+<!-- navbar ke andar jo humne home new edit login signup likha hai y sabhi routes hai.....isse again and again localhost:8080 nhi likhna padega  -->

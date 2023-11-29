@@ -22,6 +22,14 @@ const validateReview=(req,res,next)=>{
     next();// next() means error nhi aaya and review validate ho chuka hai toh ab aage badh jao means validateReview middleware ke baad jo callback function hai(in reviewRoutes.js file) use run kro jo routes m pass kiya hai(/products ke routes m)
 
 }
+const isLoggedIn =(req,res,next)=>{
+    if(!req.isAuthenticated()){
+        req.flash('error','please lgin first');
+        returnres.redirect('/login');
+    }
+    next();
+};
 
-module.exports={validateProduct,validateReview};
+
+module.exports={validateProduct,validateReview,isLoggedIn};
 // validateProduct,validateReview dono middleware export kr he hai....validateProduct ko productRoutes m require krenge and validateReview ko reviewRoutes m require krnge
