@@ -22,12 +22,13 @@ const validateReview=(req,res,next)=>{
     next();// next() means error nhi aaya and review validate ho chuka hai toh ab aage badh jao means validateReview middleware ke baad jo callback function hai(in reviewRoutes.js file) use run kro jo routes m pass kiya hai(/products ke routes m)
 
 }
-const isLoggedIn =(req,res,next)=>{
+// isLoggedIn middleware ko har route m pass krenge in productRoutes
+const isLoggedIn =(req,res,next)=>{  // user authenticate hai ya nhi (loggedin hai ya nhi means login hai ya nhi) y check krne ke liye middleware ka use krenge we will use isAuthenticated method y method boolean value return krta hai if it returns true  means user loggedin hai authenticate hai ...and if it returns false means loggedin nhi hai
     if(!req.isAuthenticated()){
-        req.flash('error','please lgin first');
-        returnres.redirect('/login');
+        req.flash('error','please login first');// if user login nhi hai toh y error show hoga and res m login bhej show hoga
+        return res.redirect('/login');
     }
-    next();
+    next();// if user login hai toh y next() chalega means productRoutes m isLoggedIn middleware ke baad async function run hoga
 };
 
 

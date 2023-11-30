@@ -21,7 +21,7 @@ module.exports=User;
 // passport and passport-local ko app.js m require krenge and passport-local-mongoose ko user ke model m require krenge
 // Passport is a tool or technique which is used for authentication...hashing(to store the password)
 // password ko directly store nhi kr sakte so we will use hashing algo to store the password
-// jahan pr password store kiya jata hai vahan pr salt bhi store liya jata hai in the database
+// jahan pr password store kiya jata hai vahan pr salt bhi store kiya jata hai in the database
 // It has only one limitation passport is authentication middleware for Node.js 
 // Passportjs.org (documentation)
 // jab kisi app ya website pr login krte hai toh vahan pr facebook login,google login , github login bhi hote hai these are called OAuths

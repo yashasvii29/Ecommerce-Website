@@ -72,6 +72,8 @@ app.use(authRoutes); // so that har incoming request ke liye path check hoga
 app.listen(8080,()=>{
     console.log("server connected at port 8080");
 })
-
+// authroutes banayenge for signup and login
 
 // req means client and res means server 
+
+// app.js file hi server hota hai

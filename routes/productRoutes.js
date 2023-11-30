@@ -9,7 +9,7 @@ const {validateProduct,isLoggedIn}=require('../middleware');
 const router =express.Router()// mini instance
 // 1st route=> to show all the products
 // har router m try catch block ka use krenge to handle the error
-router.get('/products',isLoggedIn,async(req,res)=>{
+router.get('/products',isLoggedIn,async(req,res)=>{// jab user /products pr req send krega toh sabse pehle isLoggedIn middleware chalega in middleware.js file and iss middleware m check krenge if user login hai means loggedin hai toh it will return true
     try{
         //1... Database m se data show krne ke liye pehle uss model(collection) ke anadr se data (products array) find krenge then data ko index page pr bhejenge
     // 2...Product ke model(collection ) ke andar se products find krenge(means database m se data find krenge) and find() mongoose ka method hai (means db ka crud method hai) and y methods promise return krte hai ....promise ki chaining se bachne ke liye we will use async await
