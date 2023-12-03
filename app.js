@@ -28,6 +28,11 @@ let configSession={ // y express-session ka middleware hai ise documentaion se c
     secret: 'keyboard cat',// secret key ki kuch bhi value ho sakti hai like secret:yashasvi
     resave: false,
     saveUninitialized: true,
+    cookie:{
+        httpOnly:true, // means hum only http ke sath kaam krenge
+        expires: Date.now() + 24*7*60*60*1000,  // expires m current date batate hai so we will use Date.now()....1st jan 1970 se lekar ab tak jitna time hua hai in miliseconds(Date.now() y batata hai)
+        maxAge: 24*7*60*60*1000
+    }
     // cookie: { secure: true } // secure:true ka use https protocol ke liye krte hai means deploy ke time pr iska use krte hai....https is a secure protocol
   };
 

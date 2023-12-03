@@ -14,14 +14,30 @@ router.get('/register',(req,res)=>{
 // 2nd route= want to register a user in my DB means user ko database m register krna chahte hai (user ko database m add krna chahte hai)
 // jab user signup form fill krne ke baad signup button pr click krega toh post req jayegi and sara data body object m aa jayega
 router.post('/register',async(req,res)=>{// register ke liye we will use register method
-    let {email,password,username}=req.body;// body object se form ke data ko destructure kr lenge
-    const user= new User({email,username}); // new User create krenge(but new user ko create krte time password nhi bhejenge)
-    const newUser = await User.register(user,password); // newuser ko database m register kr denge(means users ke collections(User ke model ) m users ke db m add kr denge) by using register method(to check user db m register hua hai ya nhi run the commnad on mongoshell=> db.users.find({}))...register method m 3 parameters pass krte hai register(user,password,cb) but callback function optional hota hai
-    // User model means user ke database pr register method apply kiya hai so we will use async await
-    // res.send(newUser);// res m newuser ka data bhej rhe hai
-    // register is a static method and static method ko schema (mean smodel) pr apply kr sakte hai
-    // res.redirect('/login');// signup button pr click krne ke baad login page pr redirect ho jayenge
-    // hum chahte hai user register/signup krne ke baad automatically login ho jaye
+    // console.log(req.body);
+    try{
+        let {email,password,username}=req.body;// body object se form ke data ko destructure kr lenge
+        const user= new User({email,username}); // new User create krenge(but new user ko create krte time password nhi bhejenge)
+        const newUser = await User.register(user,password); // newuser ko database m register kr denge(means users ke collections(User ke model ) m users ke db m add kr denge) by using register method(to check user db m register hua hai ya nhi run the commnad on mongoshell=> db.users.find({}))...register method m 3 parameters pass krte hai register(user,password,cb) but callback function optional hota hai
+        // User model means user ke database pr register method apply kiya hai so we will use async await
+        // res.send(newUser);// res m newuser ka data bhej rhe hai
+        // register is a static method and static method ko schema (mean smodel) pr apply kr sakte hai
+        // res.redirect('/login');// signup button pr click krne ke baad login page pr redirect ho jayenge
+        req.login(newUser,function(err){
+            if(err){
+                return next(err);
+            }
+            req.flash('success','welcome,you are registered successfully');
+            return res.redirect('/products');
+        });// hum chahte hai user register/signup krne ke baad automatically login ho jaye and products pr redirect ho jaye so we will use login()...means signup button pr click krne ke baad user automatically login ho jayega
+    }
+    catch(e){
+        // e object m error hota hai toh err ko catch krenge and e object m message field bhi hota hai toh error ke message ko bhi bhejenge
+        req.flash('error',e.message);
+        return res.redirect('/signup');
+        // res.status(500).render('error',{err:e.message});
+    }
+    
 })
 
 // 3rd route= to show the login form
