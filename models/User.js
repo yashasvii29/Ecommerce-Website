@@ -7,6 +7,10 @@ const userSchema = new mongoose.Schema({ // user ke liye wo schema define krenge
         type:String,
         trim:true,
         required:true
+    },
+    role:{
+        type:String,
+        required:true
     }
    })
 userSchema.plugin(passportLocalMongoose);

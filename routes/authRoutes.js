@@ -16,8 +16,8 @@ router.get('/register',(req,res)=>{
 router.post('/register',async(req,res)=>{// register ke liye we will use register method
     // console.log(req.body);
     try{
-        let {email,password,username}=req.body;// body object se form ke data ko destructure kr lenge
-        const user= new User({email,username}); // new User create krenge(but new user ko create krte time password nhi bhejenge)
+        let {email,password,username,role}=req.body;// body object se form ke data ko destructure kr lenge
+        const user= new User({email,username,role}); // new User create krenge(but new user ko create krte time password nhi bhejenge)
         const newUser = await User.register(user,password); // newuser ko database m register kr denge(means users ke collections(User ke model ) m users ke db m add kr denge) by using register method(to check user db m register hua hai ya nhi run the commnad on mongoshell=> db.users.find({}))...register method m 3 parameters pass krte hai register(user,password,cb) but callback function optional hota hai
         // User model means user ke database pr register method apply kiya hai so we will use async await
         // res.send(newUser);// res m newuser ka data bhej rhe hai
