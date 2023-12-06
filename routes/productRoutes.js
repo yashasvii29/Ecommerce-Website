@@ -1,7 +1,7 @@
 const express=require('express');
 const Product=require('../models/Product');
 // Product model ko isliye require kr rhe hai kyunki products show krne hai toh Product model ke andar se products  find krenge and then display on the page
-const {validateProduct,isLoggedIn}=require('../middleware');
+const {validateProduct,isLoggedIn,isSeller,isProductAuthor}=require('../middleware');
 // validateProduct middleware ko require kr rhe hai form middleware.js file
 // app method  applicaton ka complete instance hai ise export nhi kr sakte
 // we cant write app.get and app.post here
@@ -43,12 +43,13 @@ router.get('/product/new',isLoggedIn,(req,res)=>{
 })
 //3rd route=> to add the new product to database and then redirect to the /products page
  //add product button pr click krte hi post request jayegi /products pr jo humne form define kiya hai in action attribute
-router.post('/products', validateProduct,isLoggedIn, async (req,res)=>{ //  jab y route hit hoga /products toh validateProduct middleware chalega in middleware.js file and if product validate hone ke baad error nhi aaya toh uss file m next() chalega means iss route m jo callback fun hai validateProduct middleware ke baad wo run hoga
+router.post('/products', validateProduct,isLoggedIn, isSeller, async (req,res)=>{ //  jab y route hit hoga /products toh validateProduct middleware chalega in middleware.js file and if product validate hone ke baad error nhi aaya toh uss file m next() chalega means iss route m jo callback fun hai validateProduct middleware ke baad wo run hoga
     try{
             // jab form submit hoga toh sara data req ki body m milega ....toh unn sabhi data ko object ke andar destructure krenge....(object ke andar vahi name likhte h jo humne schema m define kiya h)
             let {name,img,price,desc}=req.body;  // body object ke data ko dekhne ke liye we will use the middleware app.use(express.urlencoded)
-            // database ke andar new product ko add krenge...means Product model ke andar new product create krenge
-            await Product.create({name,img,price,desc})//  create mongodb ka method hai and y promise return krta hai to promise ki chaining se bachne ke liye we will use async and await
+            // database ke andar new product ko add krenge...means Product model ke andar new product create krenge and req.user object ke andar currentuser ki sari information hoti hai jo abhi login hua hai toh req.user._id se currentuser ki id(objectid) author m assign kr denge means jo user abhi loggedin hua hai uski id author m assign kr denge...toh jab hum ek new product banayenge toh usme author ki id bhi store hogi
+            await Product.create({name,img,price,desc,author:req.user._id})//  create mongodb ka method hai and y promise return krta hai to promise ki chaining se bachne ke liye we will use async and await
+            // author can be buyer or seller (login krne ke baad navabr pr uss buyer ya seller ka name show hoga jisne bhi login kiya hai)
             // database ke andar new product add hone ke baad /products page pr redirect krenge
             req.flash('success','Product edited successfully');
             res.redirect('/products')// redirect means get req jayegi /products pr and sabhi products show ho jayenge with new product
@@ -115,7 +116,7 @@ router.patch('/products/:id',isLoggedIn,async(req,res)=>{
 // 7th route=> to delete a particular product(delete krne ke liye post req ko delete req m override krenge means method override krenge and req send krne ke liye hume form ki need hoti hai so we will make delete form in the indes.ejs file)
 // database ke andar se product delete krna hai means post req jayegi but hum method override krenge...post req ko delete req m override kr denge and we will send delete request and product delete krne ke baad redirect krenge
 
-router.delete('/products/:id',isLoggedIn,async(req,res)=>{
+router.delete('/products/:id',isLoggedIn, isProductAuthor,async(req,res)=>{
     try{
         let {id} =req.params;
         const product = await Product.findById(id);
@@ -130,3 +131,5 @@ router.delete('/products/:id',isLoggedIn,async(req,res)=>{
 })
 
 module.exports=router;// router ko export kr rhe hai toh app.js file ke andar require krenge
+
+

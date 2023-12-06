@@ -10,22 +10,26 @@
           <li class="nav-item">
             <a class="nav-link text-dark" aria-current="page" href="/products">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link text-dark" href="/product/new">New</a>
-          </li>
-          <li class="nav-item dropdown">
+          <% if(currentUser && currentUser.role === 'seller'){ %>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="/product/new">New</a>
+            </li>
+          <%} %>
+          
+          <!-- <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Link
             </a>
-          </li>
+          </li> -->
         
         </ul>
         <div class="d-flex" role="search">
           <% if(!currentUser){ %>
             <a class="text-dark nav-link " href="/login">Login</a>
             <% } else {%>
-            <a href="" class="nav-link">
-              <i class="fa-solid fa-cart-shopping"></i>
+              <a href="#" class="nav-link text-dark">Hello, <%=currentUser.username%> </a>
+            <a href="#" class="nav-link">
+              <i class="fa-solid fa-cart-shopping text-dark"></i>
               <sup> <span class="badge bg-danger">2</span> </sup>
             </a>
             <a href="/logout" class="nav-link text-dark ">Logout</a>

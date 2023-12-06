@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({ // user ke liye wo schema define krenge
         type:String,
         required:true
     }
+    // role means user ka role kya hai buyer hai ya seller hai
    })
 userSchema.plugin(passportLocalMongoose);
 // if we wanted to use passport-local-mongoose then hume iska plugin lagana padta hai user ke schema pr and  plugin method schema pr apply krte hai

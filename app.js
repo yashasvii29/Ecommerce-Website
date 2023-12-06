@@ -82,3 +82,5 @@ app.listen(8080,()=>{
 // req means client and res means server 
 
 // app.js file hi server hota hai
+
+// server ko restart krne ke liye use rs command on the terminal

@@ -74,6 +74,9 @@ module.exports=router;// router ko export kr rhe hai toh app.js file ke andar re
 
 
 
-
-
+// buyer and seller ....buyer cannot edit , add and delete a product but seller can do all the crud operations seller can add , edit and delete a product so we want buyer ko new edit and delete button show na ho but seller ko sab kuch show ho sabhi button show ho
+// buyer and seller dono ko login krna padega jab tak seller signup nhi krega login nhi krega wo bhi edit,delete and add nhi kr sakta 
+// new , edit and add button ko hide kr denge for buyer if user ka role buyer hai then he cannot see the these buttons but seller can see all these buttons
+// jo seller hoga use new , edit and delete sabhi button show honge ...seller have access
+// but jo buyer hoga means client use  only view product button and add review button show hoga (use new, edit and delete button show nhi honge) because he dont have access buyer can view product and give reviews to the product
 // forgot password(means reset password) ke liye there is a npm package nodemailer

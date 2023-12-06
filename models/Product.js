@@ -30,7 +30,11 @@ const productSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Review'// ref m y batate hai objectId(_id) kis model se leni hai...Review ke Model se leni h
         }
-    ]
+    ],
+    author:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'User'// ref m y batate hai objectId(_id) kis model se leni hai...User ke Model(database) se leni h
+    }
 })
 
 //(iss comment ka proper explanation neeche likha hai code ke andar) middleware jo behind the scences mongodb operations karwane pr use hota hai and iske andar pre and post middleware hote hai which are basically used over the schema and before the model

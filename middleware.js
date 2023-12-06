@@ -9,6 +9,7 @@ const validateProduct=(req,res,next)=>{
     }
     // if validate hone ke baad error nhi aayega toh next middleware chalega
     next();// next() means error nhi aaya and product validate ho chuka hai toh ab aage badh jao means validateProduct middleware ke baad jo callback function hai(/in productRoutes.js) use run kro jo routes m pass kiya hai(/products ke routes m)
+    // next is a middleware if error nhi aayega then next middleware chalega means aage ka callback fun run hoga
 
 };
 
@@ -31,6 +32,29 @@ const isLoggedIn =(req,res,next)=>{  // user authenticate hai ya nhi (loggedin h
     next();// if user login hai toh y next() chalega means productRoutes m isLoggedIn middleware ke baad async function run hoga
 };
 
+const isSeller = (req,res,next)=>{
+    if(!req.user.role){   // if user ka koi role nhi hai then he dont have access to do anything 
+        req.flash('error','You dont have the permission to do that');
+        return res.redirect('/products');
+    }
+    else if(req.user.role !== 'seller'){ // if user ka role hai but role seller nhi hai(means buyer hai means client) then he dont have access to do anything
+        req.flash('error','You dont have the permission to do that');
+        return res.redirect('/products');
+    }
+    next();
+}
 
-module.exports={validateProduct,validateReview,isLoggedIn};
+// suppose 2 seller hai toh 2nd seller 1st seller ke product ko delete nhi kr sakta toh iske liye we will make isProductAuthor middleware .....iss middleware ki help se we will find product ka author kon hai
+const isProductAuthor = async(req,res,next)=>{
+    let {id}=req.params; // isse product ki id mil jayegi
+    let product=await Product.findById(id);// Product ke database m se uss product ko find krenge with the help of id
+    // when we want to compare two object ids then we have method 'equals'....hum === se two object id ko compare nhi kr sakte
+    if(!product.author.equals(req.user._id)){  // we will check req.user._id se jo id milegi wo uss product ke author ki id hai ya nhi
+        req.flash('error','You are not a authorised user');
+        return res.redirect('/products'); 
+    }
+    next();
+}
+
+module.exports={validateProduct,validateReview,isLoggedIn,isSeller,isProductAuthor};
 // validateProduct,validateReview dono middleware export kr he hai....validateProduct ko productRoutes m require krenge and validateReview ko reviewRoutes m require krnge
