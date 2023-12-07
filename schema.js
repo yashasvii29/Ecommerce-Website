@@ -16,5 +16,9 @@ const reviewSchema = Joi.object({
     Comment: Joi.string().required()
 
 });
+const userSchema=Joi.object({
+    email: Joi.string().required(),
+    role: Joi.string().required()
+});
 
-module.exports={productSchema,reviewSchema};
+module.exports={productSchema,reviewSchema,userSchema};

@@ -1,6 +1,6 @@
 // schema ko validate krne ke liye middleware.js file banayi hai..iss file ke andar dono schema ko validate krenge
 // schema validate hone ke baad hi new product ko add krenge, edit krenge
-const {productSchema,reviewSchema} =require('./schema');// productschema and reviewschema ko destructure krenge and schema.js file se require krenge dono schema ko
+const {productSchema,reviewSchema,userSchema} =require('./schema');// productschema and reviewschema ko destructure krenge and schema.js file se require krenge dono schema ko
 const validateProduct=(req,res,next)=>{
     let {name,img,price,desc}=req.body;
     const {error}=productSchema.validate({name,img,price,desc});  // schema(product ke schema) ko validate kr rhe hai...validate method return two things  error and value but hum only error ko destructure krte hai
@@ -10,8 +10,8 @@ const validateProduct=(req,res,next)=>{
     // if validate hone ke baad error nhi aayega toh next middleware chalega
     next();// next() means error nhi aaya and product validate ho chuka hai toh ab aage badh jao means validateProduct middleware ke baad jo callback function hai(/in productRoutes.js) use run kro jo routes m pass kiya hai(/products ke routes m)
     // next is a middleware if error nhi aayega then next middleware chalega means aage ka callback fun run hoga
-
 };
+
 
 const validateReview=(req,res,next)=>{
     const {rating,comment}=req.body;
@@ -43,7 +43,6 @@ const isSeller = (req,res,next)=>{
     }
     next();
 }
-
 // suppose 2 seller hai toh 2nd seller 1st seller ke product ko delete nhi kr sakta toh iske liye we will make isProductAuthor middleware .....iss middleware ki help se we will find product ka author kon hai
 const isProductAuthor = async(req,res,next)=>{
     let {id}=req.params; // isse product ki id mil jayegi
@@ -56,5 +55,15 @@ const isProductAuthor = async(req,res,next)=>{
     next();
 }
 
+const validateUser=(req,res,next)=>{  
+    const {email,role}=req.body;
+    const {error}=userSchema.validate({email,role}); // review k eschema ko validate kr rhe hai
+    if(error){
+        return res.render('error');
+    }
+    // if validate hone ke baad error nhi aayega toh next middleware chalega
+    next();
+
+}
 module.exports={validateProduct,validateReview,isLoggedIn,isSeller,isProductAuthor};
 // validateProduct,validateReview dono middleware export kr he hai....validateProduct ko productRoutes m require krenge and validateReview ko reviewRoutes m require krnge

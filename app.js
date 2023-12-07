@@ -25,7 +25,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/Shopping-app')
     console.log(err);
 })
 let configSession={ // y express-session ka middleware hai ise documentaion se copy krenge ...yahan pr dirct object ka use kiya hai
-    secret: 'keyboard cat',// secret key ki kuch bhi value ho sakti hai like secret:yashasvi
+    secret: 'yashasvi',// secret key ki kuch bhi value ho sakti hai like secret:yashasvi
     resave: false,
     saveUninitialized: true,
     cookie:{
@@ -55,7 +55,7 @@ app.use(passport.session()); //locally store krne ke liye session ka use krte h
 // copy both from the documentation => passport-local-mongoose npm
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-app.use((req,res,next)=>{
+app.use((req,res,next)=>{  // iss middleware ka use flash message ke liye kr rhe hai
     res.locals.currentUser = req.user;
     res.locals.success=req.flash('success');
     res.locals.error=req.flash('error');

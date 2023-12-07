@@ -37,9 +37,7 @@ router.post('/register',async(req,res)=>{// register ke liye we will use registe
         return res.redirect('/signup');
         // res.status(500).render('error',{err:e.message});
     }
-    
 })
-
 // 3rd route= to show the login form
 router.get('/login',(req,res)=>{
     res.render('auth/login');// jab user /login url pr req send krenga toh res m login page render hoga show hoga
@@ -71,8 +69,6 @@ router.get('/logout',(req,res)=>{
 })
 // logout krne ke baad session se bhar aane ke liye hum server ko again restart krenge means ctrl+c then npm start
 module.exports=router;// router ko export kr rhe hai toh app.js file ke andar require krenge
-
-
 
 // buyer and seller ....buyer cannot edit , add and delete a product but seller can do all the crud operations seller can add , edit and delete a product so we want buyer ko new edit and delete button show na ho but seller ko sab kuch show ho sabhi button show ho
 // buyer and seller dono ko login krna padega jab tak seller signup nhi krega login nhi krega wo bhi edit,delete and add nhi kr sakta 

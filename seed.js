@@ -34,7 +34,6 @@ const products=[
         desc: "Very good"
      }
 ]
-
 async function seedDB(){
     // database ke crud methods(mongoose ke methods/mongoDB ke methods) promise return krte hai....promise chaining se bachne ke liye we will use async amd await
     // so we will declare the function async and inside the async function we will use await keyword
@@ -45,5 +44,4 @@ async function seedDB(){
     // to find the products we can run the command on mongoshell =>  db.products.find() it will return all the products
     console.log("Data seeded successfully");
 }
-
 module.exports=seedDB;
