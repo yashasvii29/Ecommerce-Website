@@ -15,6 +15,7 @@ const User=require('./models/User');
 const productRoutes=require('./routes/productRoutes');  // isliye require kr rhe hai jisse y har incoming req ke liye path check krega .....neeche app.use(productRoutes) kiya hai
 const reviewRoutes=require('./routes/reviewRoutes');
 const authRoutes=require('./routes/authRoutes');
+const cartRoutes=require('./routes/cartRoutes');
 // cookie-parser npm ka package so we will install first and after that we will require
 mongoose.connect('mongodb://127.0.0.1:27017/Shopping-app')
 .then(()=>{
@@ -74,6 +75,7 @@ passport.use(new LocalStrategy(User.authenticate())); // copy from the documenta
 app.use(productRoutes);// so that har incoming request ke liye path check hoga
 app.use(reviewRoutes); // so that har incoming request ke liye path check hoga
 app.use(authRoutes); // so that har incoming request ke liye path check hoga
+app.use(cartRoutes);// so that har incoming request ke liye path check hoga
 app.listen(8080,()=>{
     console.log("server connected at port 8080");
 })

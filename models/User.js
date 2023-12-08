@@ -11,7 +11,15 @@ const userSchema = new mongoose.Schema({ // user ke liye wo schema define krenge
     role:{
         type:String,
         required:true
-    }
+    },
+    // cart array banayenge because every user(jisne login kiya hai) uski cart hogi...ek user multiple products ko cart m add kr sakta hai
+    cart:[ // cart array m alag alag products ki id store krenge
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref: 'Product'// ref m y batate hai objectId(_id) kis model se leni hai...Product ke Model(database) se leni h
+        }
+    ]
+
     // role means user ka role kya hai buyer hai ya seller hai
    })
 userSchema.plugin(passportLocalMongoose);

@@ -4,6 +4,7 @@ const express=require('express');
 const User = require('../models/User');
 const passport=require('passport');
 const router =express.Router()// mini instance
+const {validateUser}=require('../middleware');
 // har router m try catch ka use krenge to handle the error
 
 //1st route= to show the signup form 
@@ -13,7 +14,7 @@ router.get('/register',(req,res)=>{
 
 // 2nd route= want to register a user in my DB means user ko database m register krna chahte hai (user ko database m add krna chahte hai)
 // jab user signup form fill krne ke baad signup button pr click krega toh post req jayegi and sara data body object m aa jayega
-router.post('/register',async(req,res)=>{// register ke liye we will use register method
+router.post('/register',validateUser,async(req,res)=>{// register ke liye we will use register method
     // console.log(req.body);
     try{
         let {email,password,username,role}=req.body;// body object se form ke data ko destructure kr lenge
@@ -46,12 +47,12 @@ router.get('/login',(req,res)=>{
 // 4th route= login with the help of db
 // passport ke andar authenticate method hota hai login m authenticate krte h.....authentication krne ke liye(means login krne ke liye) we will use authenticate method(passport documentation m middleware m)
 // login ke liye means authentication ke liye we will use authenticate method
-router.post('/login',
+router.post('/login',validateUser,
     passport.authenticate('local', { // copy authenticate method from documentation ...passport ke method ko use kr rhe hai for authentication so passport ko require krenge in authRoutes
         failureRedirect: '/login',
         failureMessage: true }),
     (req,res)=>{
-        console.log(req.user);// req ke andar user ka object hota hai 
+        console.log(req.user);// req ke andar user ka object hota hai and iss object ke andar currentuser jisne abhi login kiya hai uski sari information means sara data hota hai
     req.flash('success','You have successfully login');
     res.redirect('/products');// login krne ke baad products page pr redirect ho jayenge
 // jab login button pr click krenge toh products page pr redirect ho jayenge

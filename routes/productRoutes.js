@@ -1,7 +1,7 @@
 const express=require('express');
 const Product=require('../models/Product');
 // Product model ko isliye require kr rhe hai kyunki products show krne hai toh Product model ke andar se products  find krenge and then display on the page
-const {validateProduct,isLoggedIn,isSeller,isProductAuthor}=require('../middleware');
+const {validateProduct,isLoggedIn,isSeller,isProductAuthor,validateUser}=require('../middleware');
 // validateProduct middleware ko require kr rhe hai form middleware.js file
 // app method  applicaton ka complete instance hai ise export nhi kr sakte
 // we cant write app.get and app.post here
