@@ -16,7 +16,8 @@ const reviewSchema = Joi.object({
     Comment: Joi.string().required()
 
 });
-const userSchema=Joi.object({
+
+const userSchema = Joi.object({
         username: Joi.string()
             .alphanum()
             .min(3)
