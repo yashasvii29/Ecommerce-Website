@@ -57,9 +57,13 @@ const isProductAuthor = async(req,res,next)=>{
 
 const validateUser=(req,res,next)=>{  
     const {username,password,email,role}=req.body;
-    const {err}=userSchema.validate({username,password,email,role}); // user k schema ko validate kr rhe hai
-    if(err){
-        return res.render('error');
+    const {error , value}=userSchema.validate({username,password,email,role}); // user k schema ko validate kr rhe hai
+
+    // FOR SEEING THE OBJECTS RETURNED BY JOI
+    console.log(value);
+    console.log(error);
+    if(error){
+        return res.render('error' , {error : error.message});
     }
     // if validate hone ke baad err nhi aayega toh next middleware chalega
     next();
