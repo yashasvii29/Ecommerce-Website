@@ -3,8 +3,8 @@
 const {productSchema,reviewSchema,userSchema} =require('./schema');// productschema and reviewschema ko destructure krenge and schema.js file se require krenge dono schema ko
 const validateProduct=(req,res,next)=>{
     let {name,img,price,desc}=req.body;
-    const {err}=productSchema.validate({name,img,price,desc});  // schema(product ke schema) ko validate kr rhe hai...validate method return two things  err and value but hum only err ko destructure krte hai
-    if(err){
+    const error =productSchema.validate({name,img,price,desc});  // schema(product ke schema) ko validate kr rhe hai...validate method return two things  err and value but hum only err ko destructure krte hai
+    if(error){
         return res.render('error');
     }
     // if validate hone ke baad err nhi aayega toh next middleware chalega
@@ -15,8 +15,8 @@ const validateProduct=(req,res,next)=>{
 
 const validateReview=(req,res,next)=>{
     const {rating,comment}=req.body;
-    const {err}=reviewSchema.validate({rating,comment}); // review k eschema ko validate kr rhe hai
-    if(err){
+    const error = reviewSchema.validate({rating,comment}); // review k eschema ko validate kr rhe hai
+    if(error){
         return res.render('error');
     }
     // if validate hone ke baad err nhi aayega toh next middleware chalega
@@ -57,9 +57,9 @@ const isProductAuthor = async(req,res,next)=>{
 
 const validateUser=(req,res,next)=>{  
     const {username,password,email,role}=req.body;
-    const {error}=userSchema.validate({username,password,email,role}); // user k schema ko validate kr rhe hai
+    const error =userSchema.validate({username,password,email,role}); // user k schema ko validate kr rhe hai
     if(error){
-        return res.render('error' , error.message);
+        return res.render('error',error.message);
     }
     // if validate hone ke baad err nhi aayega toh next middleware chalega
     next();
