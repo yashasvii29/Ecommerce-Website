@@ -9,3 +9,6 @@ package-lock.json
 
 # Ignore .DS_Store
 .DS_Store
+
+
+# .gitignore file m unn folders and files ka name likhte hai jinhe hum github pr push nhi krna chahte means client ko nhi deta chahte 

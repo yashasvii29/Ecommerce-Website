@@ -14,10 +14,11 @@ router.get('/register',(req,res)=>{
 
 // 2nd route= want to register a user in my DB means user ko database m register krna chahte hai (user ko database m add krna chahte hai)
 // jab user signup form fill krne ke baad signup button pr click krega toh post req jayegi and sara data body object m aa jayega
-router.post('/register',validateUser,async(req,res)=>{// register ke liye we will use register method
+router.post('/register',async(req,res)=>{// register ke liye we will use register method
+    // validateUser ko ,validateUser /register ke baad pass krenge
     // console.log(req.body);
     try{
-        let {email,password,username,role}=req.body;// body object se form ke data ko destructure kr lenge
+        let {email,username,password,role}=req.body;// body object se form ke data ko destructure kr lenge
         console.log(username);
         console.log(username.length);
         const user= new User({email,username,role}); // new User create krenge(but new user ko create krte time password nhi bhejenge)
@@ -55,7 +56,7 @@ router.post('/login',validateUser,
         failureMessage: true }),
     (req,res)=>{
         console.log(req.user);// req ke andar user ka object hota hai and iss object ke andar currentuser jisne abhi login kiya hai uski sari information means sara data hota hai
-    req.flash('success','You have successfully login');
+    req.flash('success',`Wwelcome back ${req.user.username}`);
     res.redirect('/products');// login krne ke baad products page pr redirect ho jayenge
 // jab login button pr click krenge toh products page pr redirect ho jayenge
 })

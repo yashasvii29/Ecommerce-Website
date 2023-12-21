@@ -10,8 +10,14 @@ const userSchema = new mongoose.Schema({ // user ke liye wo schema define krenge
     },
     role:{
         type:String,
-        required:true
+        default:'buyer',
     },
+    wishList:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Product'
+        }
+    ],
     // cart array banayenge because every user(jisne login kiya hai) uski cart hogi...ek user multiple products ko cart m add kr sakta hai
     cart:[ // cart array m alag alag products ki id store krenge
         {

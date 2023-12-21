@@ -3,9 +3,10 @@
 const {productSchema,reviewSchema,userSchema} =require('./schema');// productschema and reviewschema ko destructure krenge and schema.js file se require krenge dono schema ko
 const validateProduct=(req,res,next)=>{
     let {name,img,price,desc}=req.body;
-    const error =productSchema.validate({name,img,price,desc});  // schema(product ke schema) ko validate kr rhe hai...validate method return two things  err and value but hum only err ko destructure krte hai
+    const {error} =productSchema.validate({name,img,price,desc});  // schema(product ke schema) ko validate kr rhe hai...validate method return two things  err and value but hum only err ko destructure krte hai
     if(error){
-        return res.render('error');
+        const msg = error.details.map((err)=>err.message).join(',');
+        return res.render('error' , {err:msg});
     }
     // if validate hone ke baad err nhi aayega toh next middleware chalega
     next();// next() means err nhi aaya and product validate ho chuka hai toh ab aage badh jao means validateProduct middleware ke baad jo callback function hai(/in productRoutes.js) use run kro jo routes m pass kiya hai(/products ke routes m)
@@ -14,10 +15,12 @@ const validateProduct=(req,res,next)=>{
 
 
 const validateReview=(req,res,next)=>{
+    console.log(req.body);
     const {rating,comment}=req.body;
-    const error = reviewSchema.validate({rating,comment}); // review k eschema ko validate kr rhe hai
+    const {error} = reviewSchema.validate({rating,comment}); // review k eschema ko validate kr rhe hai
     if(error){
-        return res.render('error');
+        const msg = error. details.map((err)=>err.message).join(',');
+        return res.render('error' , {err:msg});
     }
     // if validate hone ke baad err nhi aayega toh next middleware chalega
     next();// next() means err nhi aaya and review validate ho chuka hai toh ab aage badh jao means validateReview middleware ke baad jo callback function hai(in reviewRoutes.js file) use run kro jo routes m pass kiya hai(/products ke routes m)
@@ -25,8 +28,12 @@ const validateReview=(req,res,next)=>{
 }
 // isLoggedIn middleware ko har route m pass krenge in productRoutes
 const isLoggedIn =(req,res,next)=>{  // user authenticate hai ya nhi (loggedin hai ya nhi means login hai ya nhi) y check krne ke liye middleware ka use krenge we will use isAuthenticated method y method boolean value return krta hai if it returns true  means user loggedin hai authenticate hai ...and if it returns false means loggedin nhi hai
+
+    if(req.xhr && !req.isAuthenticated()){
+        return res.status(401).json({msg:'you need to login first'});
+    }
     if(!req.isAuthenticated()){
-        req.flash('err','please login first');// if user login nhi hai toh y err show hoga and res m login bhej show hoga
+        req.flash('error','please login first');// if user login nhi hai toh y err show hoga and res m login bhej show hoga
         return res.redirect('/login');
     }
     next();// if user login hai toh y next() chalega means productRoutes m isLoggedIn middleware ke baad async function run hoga
@@ -34,11 +41,11 @@ const isLoggedIn =(req,res,next)=>{  // user authenticate hai ya nhi (loggedin h
 
 const isSeller = (req,res,next)=>{
     if(!req.user.role){   // if user ka koi role nhi hai then he dont have access to do anything 
-        req.flash('err','You dont have the permission to do that');
+        req.flash('error','You dont have the permission to do that');
         return res.redirect('/products');
     }
     else if(req.user.role !== 'seller'){ // if user ka role hai but role seller nhi hai(means buyer hai means client) then he dont have access to do anything
-        req.flash('err','You dont have the permission to do that');
+        req.flash('error','You dont have the permission to do that');
         return res.redirect('/products');
     }
     next();
@@ -49,17 +56,18 @@ const isProductAuthor = async(req,res,next)=>{
     let product=await Product.findById(id);// Product ke database m se uss product ko find krenge with the help of id
     // when we want to compare two object ids then we have method 'equals'....hum === se two object id ko compare nhi kr sakte
     if(!product.author.equals(req.user._id)){  // we will check req.user._id se jo id milegi wo uss product ke author ki id hai ya nhi
-        req.flash('err','You are not a authorised user');
-        return res.redirect('/products'); 
+        req.flash('error','You are not a authorised user');
+        return res.redirect(`/products/${id}`); 
     }
     next();
 }
 
 const validateUser=(req,res,next)=>{  
     const {username,password,email,role}=req.body;
-    const error =userSchema.validate({username,password,email,role}); // user k schema ko validate kr rhe hai
+    const {error} =userSchema.validate({username,password,email,role}); // user k schema ko validate kr rhe hai
     if(error){
-        return res.render('error',error.message);
+        const msg = error.details.map((err)=>err.message).join(',');
+        return res.render('error' , {err:msg});
     }
     // if validate hone ke baad err nhi aayega toh next middleware chalega
     next();

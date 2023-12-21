@@ -8,7 +8,9 @@ const Product=require('../models/Product');
 // jab user /user/cart pr req krega toh res m cart bhej show hoga and cart.ejs page pr currentuser ka data bhej rhe hai(data means wo user and uski cart bhej rhe hai)
 router.get('/user/cart',isLoggedIn,async(req,res)=>{
     let user=await User.findById(req.user._id).populate('cart'); // jab bhi mongodb ke sath means database ke sath kaam krte hai so we will use populate method.....User ke database m se user ko find krenge with the help of id and user variable m uss user ke cart bhi aa jayenge(means uss user ne apne cart m konse products add kiye hai)
-    res.render('cart/cart',{user});  
+    const totalAmount = user.cart.reduce((sum , curr)=> sum+curr.price , 0)
+    const productInfo = user.cart.map((p)=>p.desc).join(',');
+    res.render('cart/cart',{user,totalAmount,productInfo});  
 
 })
 

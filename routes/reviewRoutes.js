@@ -13,6 +13,7 @@ const router =express.Router()// mini instance
 router.post('/products/:id/review',validateReview, async(req,res)=>{ //  jab y route hit hoga /products/:id/review toh validateReview middleware chalega in middleware.js file and if review validate hone ke baad error nhi aaya toh uss file m next() chalega means iss route m jo callback fun hai validateProduct middleware ke baad wo run hoga
     // console.log(req.body);
     try{
+        console.log(req.params)
         let {id}=req.params;
         let {rating,comment}=req.body;
         const product= await Product.findById(id);// product find krenge with the help of id(database ke andar se product find krenge with the help of id jise review dena hai)
@@ -20,6 +21,11 @@ router.post('/products/:id/review',validateReview, async(req,res)=>{ //  jab y r
         // new review banayenge means Review model ka object banayenge(because model is a js class)
         const review = new Review({rating,comment});
         // res.send('review route');
+
+        // average rating logic
+        const newAverageRating =((product.avgRating*product.reviews.length) + parseInt(rating)) / (product.reviews.length+1);
+        product.avgRating = parseFloat(newAverageRating.toFixed(1));
+
         // humne id ki help se jo product find kiya hai uss product ki reviews array m new review ko add kr denge(reviews array m new review ko push kr denge)
         product.reviews.push(review);
         // jis product ke andar reviews daale hai uss product ko save krenge and new review ko bhi save krenge
@@ -36,8 +42,9 @@ router.post('/products/:id/review',validateReview, async(req,res)=>{ //  jab y r
     catch(e){
         // e object m error hota hai toh err ko catch krenge and e object m message field bhi hota hai toh error ke message ko bhi bhejenge
         res.status(500).render('error',{err:e.message});
+        // {err:e.message}
     }
-})
+});
 
 module.exports=router;// router ko export kr rhe hai toh app.js file ke andar require krenge
 

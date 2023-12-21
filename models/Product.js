@@ -19,6 +19,10 @@ const productSchema = new mongoose.Schema({
         type:String,
         trim:true
     },
+    avgRating:{
+        type : Number,
+        default:0
+    },
     // reviews array banayenge of objects(because ek product pr multiple reviews ho skte hai means bahut sare users ne ek hi product pr reviews diye hai)...it is a 1 to many relationship
     // array ke andar aisi property apply krenge jisse hum ek review ko dusre review se differentiate kr sake ...property is objectId(_id)
     // 1 to many relationship ke case m complete data store nhi krte...only objectId(_id) store krte hai

@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV !==' production'){
+    require('dotenv').config();
+}
+
 const express=require('express');
 const app=express();
 const path=require('path');
@@ -12,6 +16,7 @@ const session=require('express-session');
 const passport=require('passport');
 const LocalStrategy=require('passport-local');
 const User=require('./models/User');
+const MongoStore=require('connect-mongo');
 const productRoutes=require('./routes/productRoutes');  // isliye require kr rhe hai jisse y har incoming req ke liye path check krega .....neeche app.use(productRoutes) kiya hai
 const reviewRoutes=require('./routes/reviewRoutes');
 const authRoutes=require('./routes/authRoutes');
