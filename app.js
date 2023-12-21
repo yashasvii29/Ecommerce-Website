@@ -17,12 +17,13 @@ const passport=require('passport');
 const LocalStrategy=require('passport-local');
 const User=require('./models/User');
 const MongoStore=require('connect-mongo');
-const productRoutes=require('./routes/productRoutes');  // isliye require kr rhe hai jisse y har incoming req ke liye path check krega .....neeche app.use(productRoutes) kiya hai
-const reviewRoutes=require('./routes/reviewRoutes');
-const authRoutes=require('./routes/authRoutes');
-const cartRoutes=require('./routes/cartRoutes');
+
 // cookie-parser npm ka package so we will install first and after that we will require
-mongoose.connect('mongodb://127.0.0.1:27017/Shopping-app')
+// mongoose.connect('mongodb://127.0.0.1:27017/Shopping-app')
+const dbURL = process.env.dbURL;
+
+mongoose.set('strictQuery',true);
+mongoose.connect(dbURL)
 .then(()=>{
     console.log("DB Connected successfully")
 })
@@ -30,8 +31,28 @@ mongoose.connect('mongodb://127.0.0.1:27017/Shopping-app')
     console.log("DB error");
     console.log(err);
 })
+
+// ejs is a templating language
+app.engine('ejs',ejsMate);// app ko batayenge ki ejs file ko ejsMate engine read kr rhe hai
+app.set('view engine','ejs'); // express ke pass default engine present hai that is view engine and view engine ejs files ko dekh rha hai.....but hum default engine ke sath work nhi krna chahte so we'll install the engine => ejs mate(this is also a engine) hum ejs mate engine ka use krenge
+app.set('views',path.join(__dirname,'views'));
+app.use(express.static(path.join(__dirname,'public')));
+app.use(express.urlencoded({extended:true}));  //body object ke data ko dekhne ke liye we will use the middleware
+app.use(methodOverride('_method'));
+
+let secret = process.env.SECRET || 'weneedabettersecretkey';
+
+
+let store = MongoStore.create({
+            secret:secret,
+            mongoUrl:dbURL,
+            touchAfter:24*60*60
+})
+
 let configSession={ // y express-session ka middleware hai ise documentaion se copy krenge ...yahan pr dirct object ka use kiya hai
+    store:store,
     secret: 'yashasvi',// secret key ki kuch bhi value ho sakti hai like secret:yashasvi
+    secret:secret,
     resave: false,
     saveUninitialized: true,
     cookie:{
@@ -42,13 +63,7 @@ let configSession={ // y express-session ka middleware hai ise documentaion se c
     // cookie: { secure: true } // secure:true ka use https protocol ke liye krte hai means deploy ke time pr iska use krte hai....https is a secure protocol
   };
 
-// ejs is a templating language
-app.engine('ejs',ejsMate);// app ko batayenge ki ejs file ko ejsMate engine read kr rhe hai
-app.set('view engine','ejs'); // express ke pass default engine present hai that is view engine and view engine ejs files ko dekh rha hai.....but hum default engine ke sath work nhi krna chahte so we'll install the engine => ejs mate(this is also a engine) hum ejs mate engine ka use krenge
-app.set('views',path.join(__dirname,'views'));
-app.use(express.static(path.join(__dirname,'public')));
-app.use(express.urlencoded({extended:true}));  //body object ke data ko dekhne ke liye we will use the middleware
-app.use(methodOverride('_method'));
+
 app.use(session(configSession)); // session ke middleware ka use kiya hai
 app.use(flash());// flash ke middleware ka use krenge (flash package)
 // flash means display krna(flash a message means display a message/popup a message)
@@ -61,6 +76,12 @@ app.use(passport.session()); //locally store krne ke liye session ka use krte h
 // copy both from the documentation => passport-local-mongoose npm
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+passport.use(new LocalStrategy(User.authenticate())); // copy from the documentation => passport-local-mongoose npm
+
+// passport
+// use static authenticate method of model in LocalStrategy
+
 app.use((req,res,next)=>{  // iss middleware ka use flash message ke liye kr rhe hai
     res.locals.currentUser = req.user;
     res.locals.success=req.flash('success');
@@ -69,22 +90,41 @@ app.use((req,res,next)=>{  // iss middleware ka use flash message ke liye kr rhe
 // hume message ko har page pr means har template pr flash/popup/display krana hai ...if kisi kaam ko again and again krna hai means pehle edit page pr message ko flash karana hai then show page pr then new page pr then we will use locals(means hum cheezon ko local storage m store krte hai)...locals is a part of js
 // locals is a object which contain local variables and locals is available in response(res m locals object available hota hai) and they are available for the views rendered
 })
-// passport
-// use static authenticate method of model in LocalStrategy
-passport.use(new LocalStrategy(User.authenticate())); // copy from the documentation => passport-local-mongoose npm
-
 // seeding database(means add data to the database)
 //  seedDB();
 // but seedDB function ko ek baar run krne ke baad just comment krna padega otherwise y always data ko seed krta rehega means database m data add krta rahega
+
+
+// routes require
+const productRoutes=require('./routes/productRoutes');  // isliye require kr rhe hai jisse y har incoming req ke liye path check krega .....neeche app.use(productRoutes) kiya hai
+const reviewRoutes=require('./routes/reviewRoutes');
+const authRoutes=require('./routes/authRoutes');
+const cartRoutes=require('./routes/cartRoutes');
+const productApi = require('./routes/api/productapi');
+const paymentRoutes = require('./routes/paymentRoutes');
+// authroutes banayenge for signup and login
+
+
+qpp.get('/',(req,res)=>{
+    res.render('home');
+})
 
 app.use(productRoutes);// so that har incoming request ke liye path check hoga
 app.use(reviewRoutes); // so that har incoming request ke liye path check hoga
 app.use(authRoutes); // so that har incoming request ke liye path check hoga
 app.use(cartRoutes);// so that har incoming request ke liye path check hoga
-app.listen(8080,()=>{
-    console.log("server connected at port 8080");
+app.use(productApi);
+app.use(paymentRoutes);
+
+const port = 8080;
+
+
+app.listen(port,()=>{
+    console.log(`server connected at port ${port}`);
 })
-// authroutes banayenge for signup and login
+
+
+
 
 // req means client and res means server 
 
