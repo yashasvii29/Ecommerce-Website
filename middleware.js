@@ -1,5 +1,7 @@
 // schema ko validate krne ke liye middleware.js file banayi hai..iss file ke andar dono schema ko validate krenge
 // schema validate hone ke baad hi new product ko add krenge, edit krenge
+const Product = require('./models/Product');
+const passport = require('passport');
 const {productSchema,reviewSchema,userSchema} =require('./schema');// productschema and reviewschema ko destructure krenge and schema.js file se require krenge dono schema ko
 const validateProduct=(req,res,next)=>{
     let {name,img,price,desc}=req.body;
@@ -55,10 +57,13 @@ const isProductAuthor = async(req,res,next)=>{
     let {id}=req.params; // isse product ki id mil jayegi
     let product=await Product.findById(id);// Product ke database m se uss product ko find krenge with the help of id
     // when we want to compare two object ids then we have method 'equals'....hum === se two object id ko compare nhi kr sakte
-    if(!product.author.equals(req.user._id)){  // we will check req.user._id se jo id milegi wo uss product ke author ki id hai ya nhi
+    if (product && product.author && req.user && req.user._id) {
+        if (!product.author.equals(req.user._id)) {
+            // Your code here 
         req.flash('error','You are not a authorised user');
         return res.redirect(`/products/${id}`); 
     }
+}
     next();
 }
 

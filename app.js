@@ -105,7 +105,7 @@ const paymentRoutes = require('./routes/paymentRoutes');
 // authroutes banayenge for signup and login
 
 
-qpp.get('/',(req,res)=>{
+app.get('/',(req,res)=>{
     res.render('home');
 })
 

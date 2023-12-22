@@ -8,7 +8,7 @@ const router =express.Router()// mini instance
 router.get('/products', showAllProducts );
 
 
-router.get('/products/new', isLoggedIn, isSeller, productForm);
+router.get('/product/new', isLoggedIn, isSeller, productForm);
 
 router.post('/products', isLoggedIn, isSeller, validateProduct, createProduct);
 

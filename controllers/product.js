@@ -30,7 +30,7 @@ const showAllProducts=async(req,res)=>{// jab user /products pr req send krega t
 // 2nd route=> to show the form for new product
 const productForm=(req,res)=>{
     try{
-         res.render('products/new')
+         res.render('products/new');
     // // response m new form show hoga
     }
     catch(e){

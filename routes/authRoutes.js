@@ -49,8 +49,8 @@ router.get('/login',(req,res)=>{
 
 // 4th route= login with the help of db
 // passport ke andar authenticate method hota hai login m authenticate krte h.....authentication krne ke liye(means login krne ke liye) we will use authenticate method(passport documentation m middleware m)
-// login ke liye means authentication ke liye we will use authenticate method
-router.post('/login',validateUser,
+// login ke liye means authentication ke liye we will use authenticate method  .../login ke baad validateUser middleware likenge
+router.post('/login',
     passport.authenticate('local', { // copy authenticate method from documentation ...passport ke method ko use kr rhe hai for authentication so passport ko require krenge in authRoutes
         failureRedirect: '/login',
         failureMessage: true }),
