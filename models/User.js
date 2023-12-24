@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({ // user ke liye wo schema define krenge
         type:String,
         default:'buyer',
     },
-    wishList:[
+    // har user ki ek wishlist array hogi (each user has wishList) 
+    wishList:[ // wishlist array ke andar uss product ki id store krnge jise user ne like kiya hsi
         {
             type:mongoose.Schema.Types.ObjectId,
             ref:'Product'

@@ -1,5 +1,6 @@
+console.log("connected");
 const allLikeButton = document.querySelectorAll('.like-btn');
-
+// jab like button pr click krenge toh click event perform hoga and we will send the ajax request to the server so like button ke liye api create krenge in productapi.js file in routes folder
 
 async function likeButton(productId , btn){
     try{
@@ -28,7 +29,8 @@ async function likeButton(productId , btn){
 
 for(let btn of allLikeButton){
     btn.addEventListener('click' , ()=>{
-        let productId = btn.getAttribute('product-id'); 
+        console.log(btn.getAttribute('product-id'));
+        let productId = btn.getAttribute('product-id'); // isse uss product ki id aa jayegi jis product ko user ne like kiya hai
         likeButton(productId,btn);
     })
 }
