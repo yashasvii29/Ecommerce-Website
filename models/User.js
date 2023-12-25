@@ -25,6 +25,13 @@ const userSchema = new mongoose.Schema({ // user ke liye wo schema define krenge
             type:mongoose.Schema.Types.ObjectId,
             ref: 'Product'// ref m y batate hai objectId(_id) kis model se leni hai...Product ke Model(database) se leni h
         }
+        // {
+        //     name:  ,
+        //     price:  ,
+        //     desc:    ,
+        //     img:   ,
+        //     qty:
+        // }
     ]
 
     // role means user ka role kya hai buyer hai ya seller hai

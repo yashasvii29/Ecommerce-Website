@@ -30,10 +30,15 @@ const validateReview=(req,res,next)=>{
 }
 // isLoggedIn middleware ko har route m pass krenge in productRoutes
 const isLoggedIn =(req,res,next)=>{  // user authenticate hai ya nhi (loggedin hai ya nhi means login hai ya nhi) y check krne ke liye middleware ka use krenge we will use isAuthenticated method y method boolean value return krta hai if it returns true  means user loggedin hai authenticate hai ...and if it returns false means loggedin nhi hai
-
+    // req.xhr ka use krte h to check whether the request is ajax or not
+    console.log(req.xhr); // true means xhr req send kr rhe hai
     if(req.xhr && !req.isAuthenticated()){
+        // if(req.session.returnUrl){
+        //     delete req.session.returnUrl;
+        // }
         return res.status(401).json({msg:'you need to login first'});
     }
+    // req.session.returnUrl = req.originalUrl;
     if(!req.isAuthenticated()){
         req.flash('error','please login first');// if user login nhi hai toh y err show hoga and res m login bhej show hoga
         return res.redirect('/login');

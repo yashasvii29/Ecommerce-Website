@@ -8,7 +8,9 @@ const Product=require('../models/Product');
 // jab user /user/cart pr req krega toh res m cart bhej show hoga and cart.ejs page pr currentuser ka data bhej rhe hai(data means wo user and uski cart bhej rhe hai)
 router.get('/user/cart',isLoggedIn,async(req,res)=>{
     let user=await User.findById(req.user._id).populate('cart'); // jab bhi mongodb ke sath means database ke sath kaam krte hai so we will use populate method.....User ke database m se user ko find krenge with the help of id and user variable m uss user ke cart bhi aa jayenge(means uss user ne apne cart m konse products add kiye hai)
-    const totalAmount = user.cart.reduce((sum , curr)=> sum+curr.price , 0)
+    const totalAmount = user.cart.reduce((sum , curr)=> sum+curr.price , 0); // reduce is a array method(reduce mdn documentation) which accepts two parameters here 0 means initiallty sum is 0
+    // curr is iterator jo cart ke har item(means product) pr iterate krega
+    // totalAmount m sum aa jayega means cart m jitne bhi items hai sab ka sum
     const productInfo = user.cart.map((p)=>p.desc).join(',');
     res.render('cart/cart',{user,totalAmount,productInfo});  
 
