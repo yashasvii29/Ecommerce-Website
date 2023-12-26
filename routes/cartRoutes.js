@@ -11,7 +11,8 @@ router.get('/user/cart',isLoggedIn,async(req,res)=>{
     const totalAmount = user.cart.reduce((sum , curr)=> sum+curr.price , 0); // reduce is a array method(reduce mdn documentation) which accepts two parameters here 0 means initiallty sum is 0
     // curr is iterator jo cart ke har item(means product) pr iterate krega
     // totalAmount m sum aa jayega means cart m jitne bhi items hai sab ka sum
-    const productInfo = user.cart.map((p)=>p.desc).join(',');
+    const productInfo = user.cart.map((product)=>product.desc).join(',');
+    console.log(productInfo);
     res.render('cart/cart',{user,totalAmount,productInfo});  
 
 })

@@ -83,6 +83,7 @@ passport.use(new LocalStrategy(User.authenticate())); // copy from the documenta
 // use static authenticate method of model in LocalStrategy
 
 app.use((req,res,next)=>{  // iss middleware ka use flash message ke liye kr rhe hai
+    // console.log(process.env.NAME);  // y check kr he hai ki .env file se name variable ko acess kr pa rhe hai
     res.locals.currentUser = req.user;
     res.locals.success=req.flash('success');
     res.locals.error=req.flash('error');

@@ -17,11 +17,12 @@ const validateProduct=(req,res,next)=>{
 
 
 const validateReview=(req,res,next)=>{
+    console.log("inside validate middleware")
     console.log(req.body);
     const {rating,comment}=req.body;
     const {error} = reviewSchema.validate({rating,comment}); // review k eschema ko validate kr rhe hai
     if(error){
-        const msg = error. details.map((err)=>err.message).join(',');
+        const msg = error.details.map((err)=>err.message).join(',');
         return res.render('error' , {err:msg});
     }
     // if validate hone ke baad err nhi aayega toh next middleware chalega

@@ -36,5 +36,5 @@ router.post('/product/:productid/like' , isLoggedIn , async(req,res)=>{ // produ
 
 // jab bhi hum apne project m koi new functionality add krte hai toh sabse pehle uss functionality ko apne schema m means model m add krte hai
 
-module.exports = router;
+module.exports = router;  // productapi ko app.js file m require krenge then use krenge
 
