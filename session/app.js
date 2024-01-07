@@ -15,7 +15,6 @@ app.use(session({
 
   app.get('/viewcount',(req,res)=>{
     // req m session hota hai means req object ke andar session hota hai because jab client server pr req send krta hai toh req ke sath cookies bhi jati hai and cookies bhi session ki id store hoti hai means req object ke andar session hota hai
-    
     if(req.session.count){
       // if req ke session ke andar count name ka variable hai means client website ko visit kr chuka hai toh count variable ko increase kr denge(browser ko refresh krne pr count inc hoga)
       // if hum server ko refresh krte hai means app.js file ko rok dete hai by ctl+c toh session expired ho jayega and count again 1 se start hoga beacuse session is a server side storage it depends on server.....for ex=> hum chatgpt us ekrte hai firstly uss pr login krte hai and chatgpt ka session 2 se 3 din m expired ho jata hai hume again login krna padta hai

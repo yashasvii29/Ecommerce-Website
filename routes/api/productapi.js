@@ -10,8 +10,6 @@ const User = require('../../models/User');
 // ajax request ke liye we will copy the link from the github.com/axios and then paste in the boilerplate
 
 router.post('/product/:productid/like' , isLoggedIn , async(req,res)=>{ // product ko like krne ke liye user login hona chahihye toh jab user like button pr click krega toh sabse pehle isLoggedIn middleware chalega
-
-    
     let {productid} = req.params; // params object se product ki id mil jayegi
     console.log(productid)
     let user = req.user; // grab the current loggedin user
@@ -37,4 +35,5 @@ router.post('/product/:productid/like' , isLoggedIn , async(req,res)=>{ // produ
 // jab bhi hum apne project m koi new functionality add krte hai toh sabse pehle uss functionality ko apne schema m means model m add krte hai
 
 module.exports = router;  // productapi ko app.js file m require krenge then use krenge
+
 

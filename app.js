@@ -17,6 +17,7 @@ const passport=require('passport');
 const LocalStrategy=require('passport-local');
 const User=require('./models/User');
 const MongoStore=require('connect-mongo');
+const mongoSanitize = require('express-mongo-sanitize');
 
 // cookie-parser npm ka package so we will install first and after that we will require
 // mongoose.connect('mongodb://127.0.0.1:27017/Shopping-app')
@@ -39,6 +40,7 @@ app.set('views',path.join(__dirname,'views'));
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.urlencoded({extended:true}));  //body object ke data ko dekhne ke liye we will use the middleware
 app.use(methodOverride('_method'));
+app.use(mongoSanitize());
 
 let secret = process.env.SECRET || 'weneedabettersecretkey';
 
@@ -125,10 +127,7 @@ app.listen(port,()=>{
 })
 
 
-
-
 // req means client and res means server 
-
 // app.js file hi server hota hai
-
 // server ko restart krne ke liye use rs command on the terminal
+

@@ -15,8 +15,9 @@ router.post('/products/:id/review',isLoggedIn,validateReview, async(req,res)=>{ 
     try{
         console.log(req.params)
         let {id}=req.params;
-        let {rating,comment}=req.body;
+       
         const product= await Product.findById(id);// product find krenge with the help of id(database ke andar se product find krenge with the help of id jise review dena hai)
+        let {rating,comment}=req.body;
         // console.log(product);
         // new review banayenge means Review model ka object banayenge(because model is a js class)
         const review = new Review({rating,comment});

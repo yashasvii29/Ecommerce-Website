@@ -1,0 +1,4 @@
+db.users.find({})
+// to make our application or website secure we wiil use express-mongo-sanitize package and sanitize html package ....to use this package we need to install it and then require in the app.js
+// documenation=> express-mongo-sanitize and sanitize html
+// sanitize html ka use isliye krte hai jisse user input m koi tag submit na kar sake
