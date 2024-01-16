@@ -3,6 +3,27 @@
 const Product = require('./models/Product');
 const passport = require('passport');
 const {productSchema,reviewSchema,userSchema} =require('./schema');// productschema and reviewschema ko destructure krenge and schema.js file se require krenge dono schema ko
+
+
+// isLoggedIn middleware ko har route m pass krenge in productRoutes
+const isLoggedIn =(req,res,next)=>{  // user authenticate hai ya nhi (loggedin hai ya nhi means login hai ya nhi) y check krne ke liye middleware ka use krenge we will use isAuthenticated method y method boolean value return krta hai if it returns true  means user loggedin hai authenticate hai ...and if it returns false means loggedin nhi hai
+    // req.xhr ka use krte h to check whether the request is ajax or not
+    console.log(req.xhr); // true means xhr req send kr rhe hai
+    if(req.xhr && !req.isAuthenticated()){
+        // if(req.session.returnUrl){
+        //     delete req.session.returnUrl;
+        // }
+        return res.status(401).json({msg:'you need to login first'});
+    }
+    // req.session.returnUrl = req.originalUrl;
+    if(!req.isAuthenticated()){
+        req.flash('error','please login first');// if user login nhi hai toh y err show hoga and res m login bhej show hoga
+        return res.redirect('/login');
+    }
+    next();// if user login hai toh y next() chalega means productRoutes m isLoggedIn middleware ke baad async function run hoga
+};
+
+
 const validateProduct=(req,res,next)=>{
     let {name,img,price,desc}=req.body;
     const {error} =productSchema.validate({name,img,price,desc});  // schema(product ke schema) ko validate kr rhe hai...validate method return two things  err and value but hum only err ko destructure krte hai
@@ -29,23 +50,7 @@ const validateReview=(req,res,next)=>{
     next();// next() means err nhi aaya and review validate ho chuka hai toh ab aage badh jao means validateReview middleware ke baad jo callback function hai(in reviewRoutes.js file) use run kro jo routes m pass kiya hai(/products ke routes m)
 
 }
-// isLoggedIn middleware ko har route m pass krenge in productRoutes
-const isLoggedIn =(req,res,next)=>{  // user authenticate hai ya nhi (loggedin hai ya nhi means login hai ya nhi) y check krne ke liye middleware ka use krenge we will use isAuthenticated method y method boolean value return krta hai if it returns true  means user loggedin hai authenticate hai ...and if it returns false means loggedin nhi hai
-    // req.xhr ka use krte h to check whether the request is ajax or not
-    console.log(req.xhr); // true means xhr req send kr rhe hai
-    if(req.xhr && !req.isAuthenticated()){
-        // if(req.session.returnUrl){
-        //     delete req.session.returnUrl;
-        // }
-        return res.status(401).json({msg:'you need to login first'});
-    }
-    // req.session.returnUrl = req.originalUrl;
-    if(!req.isAuthenticated()){
-        req.flash('error','please login first');// if user login nhi hai toh y err show hoga and res m login bhej show hoga
-        return res.redirect('/login');
-    }
-    next();// if user login hai toh y next() chalega means productRoutes m isLoggedIn middleware ke baad async function run hoga
-};
+
 
 const isSeller = (req,res,next)=>{
     if(!req.user.role){   // if user ka koi role nhi hai then he dont have access to do anything 
@@ -58,6 +63,8 @@ const isSeller = (req,res,next)=>{
     }
     next();
 }
+
+
 // suppose 2 seller hai toh 2nd seller 1st seller ke product ko delete nhi kr sakta toh iske liye we will make isProductAuthor middleware .....iss middleware ki help se we will find product ka author kon hai
 const isProductAuthor = async(req,res,next)=>{
     let {id}=req.params; // isse product ki id mil jayegi

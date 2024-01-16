@@ -4,20 +4,19 @@ const express=require('express');
 const Product=require('../models/Product');
 const Review = require('../models/Review');
 // Product model ko isliye require kr rhe hai kyunki products show krne hai toh Product model ke andar se products  find krenge and then display on the page
-const {validateReview,isLoggedIn}=require('../middleware');
+const {validateReview,isLoggedIn, isProductAuthor}=require('../middleware');
 // app method  applicaton ka complete instance hai ise export nhi kr sakte
 // we cannott write app.get and app.post here
 // express provide mini instance (router) we will use router 
 const router =express.Router()// mini instance
 // har router m try catch ka use krenge to handle the error
-router.post('/products/:id/review',isLoggedIn,validateReview, async(req,res)=>{ //  jab y route hit hoga /products/:id/review toh validateReview middleware chalega in middleware.js file and if review validate hone ke baad error nhi aaya toh uss file m next() chalega means iss route m jo callback fun hai validateProduct middleware ke baad wo run hoga
+router.post('/products/:id/review',isLoggedIn, async(req,res)=>{ //  jab y route hit hoga /products/:id/review toh validateReview middleware chalega in middleware.js file and if review validate hone ke baad error nhi aaya toh uss file m next() chalega means iss route m jo callback fun hai validateProduct middleware ke baad wo run hoga
     // console.log(req.body);
     try{
         console.log(req.params)
         let {id}=req.params;
-       
-        const product= await Product.findById(id);// product find krenge with the help of id(database ke andar se product find krenge with the help of id jise review dena hai)
         let {rating,comment}=req.body;
+        const product= await Product.findById(id);// product find krenge with the help of id(database ke andar se product find krenge with the help of id jise review dena hai)
         // console.log(product);
         // new review banayenge means Review model ka object banayenge(because model is a js class)
         const review = new Review({rating,comment});
@@ -46,6 +45,25 @@ router.post('/products/:id/review',isLoggedIn,validateReview, async(req,res)=>{ 
         // {err:e.message}
     }
 });
+
+router.delete('/products/:productId/reviews/:reviewId',isLoggedIn,isProductAuthor,async (req,res)=>{
+    try{
+        let {productId} = req.params;
+        console.log('delete reviw');
+        // review ko delete krme ke liye sabse pehle uss product ko find krenge jiske review ko delte krna hai findById se
+        let product = await Product.findById(productId);
+        let {reviewId} =req.params;
+         await Review.findByIdAndDelete(reviewId);
+         await Product.findByIdAndUpdate(productId,{['$pull']:{reviews:reviewId}});
+         // pull means to remove the element from the array .. it is a mongodb array operator
+         req.flash('success','Reviews deleted Successfully');
+         res.redirect(`/products/${productId}`);
+    }
+    catch(e){
+        console.log('error')
+        res.status(500).render('error',{err:e.message});
+    }
+})
 
 module.exports=router;// router ko export kr rhe hai toh app.js file ke andar require krenge
 

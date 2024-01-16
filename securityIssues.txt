@@ -1,4 +1,5 @@
-db.users.find({})
+db.users.find({username:'yashasvi'})
 // to make our application or website secure we wiil use express-mongo-sanitize package and sanitize html package ....to use this package we need to install it and then require in the app.js
 // documenation=> express-mongo-sanitize and sanitize html
 // sanitize html ka use isliye krte hai jisse user input m koi tag submit na kar sake
+// hum nhi chahte user mongo ke operator ya mongo se related kuch bhi req.params , req.query or req.body ke andar bhej paye so for that we will use express-mongo-sanitize

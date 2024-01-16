@@ -41,7 +41,13 @@ app.use(express.static(path.join(__dirname,'public')));
 app.use(express.urlencoded({extended:true}));  //body object ke data ko dekhne ke liye we will use the middleware
 app.use(methodOverride('_method'));
 app.use(mongoSanitize());
-
+// app.use(
+//     mongoSanitize({
+//       onSanitize: ({ req, key }) => {
+//         console.warn(`This request[${key}] is sanitized`, req);
+//       },
+//     }),
+//   );
 let secret = process.env.SECRET || 'weneedabettersecretkey';
 
 
@@ -94,7 +100,7 @@ app.use((req,res,next)=>{  // iss middleware ka use flash message ke liye kr rhe
 // locals is a object which contain local variables and locals is available in response(res m locals object available hota hai) and they are available for the views rendered
 })
 // seeding database(means add data to the database)
-//  seedDB();
+// seedDB();
 // but seedDB function ko ek baar run krne ke baad just comment krna padega otherwise y always data ko seed krta rehega means database m data add krta rahega
 
 
@@ -105,6 +111,7 @@ const authRoutes=require('./routes/authRoutes');
 const cartRoutes=require('./routes/cartRoutes');
 const productApi = require('./routes/api/productapi');
 const paymentRoutes = require('./routes/paymentRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 // authroutes banayenge for signup and login
 
 
@@ -118,6 +125,7 @@ app.use(authRoutes); // so that har incoming request ke liye path check hoga
 app.use(cartRoutes);// so that har incoming request ke liye path check hoga
 app.use(productApi);
 app.use(paymentRoutes);
+app.use(orderRoutes);
 
 const port = 8080;
 
@@ -131,3 +139,13 @@ app.listen(port,()=>{
 // app.js file hi server hota hai
 // server ko restart krne ke liye use rs command on the terminal
 
+//WAY FORWARD FOR E-COMMERCE SITE......
+
+// 1.Delete a Review.
+// 2.Remove item from cart.
+// 3.Uploading Images using Cloudinary and Multer Middleware.
+// 4.Authentication using Google,Facebook.
+// 5.Search Product
+// 6.Sort Product according to Price 
+// 7.Add Filters
+// 8.Add profile of the User.

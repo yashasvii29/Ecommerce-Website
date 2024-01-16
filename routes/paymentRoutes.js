@@ -58,13 +58,36 @@ router.post('/payment_gateway/payumoney', isLoggedIn, (req, res) => {  // y comp
 });
 
 // success route...payment success url
-router.post('/payment/success', (req, res) => {
-    res.send(req.body);
+router.post('/payment/success',isLoggedIn, async(req, res) => {
+    const { txnid, productinfo, amount } = req.body;
+
+    // Getting the current User 
+    const user = req.user;
+
+
+    // Creating a new order and storing the whole cart into orderedProduct
+    const order = new Order({txnid,productinfo,amount,orderedProducts:[...user.cart]})
+    
+    // Pushing the new order into user's order array
+    user.orders.push(order);
+
+    // saving the new order in database
+    await order.save();
+
+    // removing everything from current user's cart
+    user.cart.splice(0, user.cart.length);
+
+    // saving the updated user in the database and assigning updated user to the req.user
+    req.user = await user.save();
+
+    req.flash('success', 'Placed your order Successfully!!');
+    res.redirect('/user/myorders');
 })
 
 // failure route..payment failure url
-router.post('/payment/fail', (req, res) => {
-    res.send(req.body);
+router.post('/payment/fail',isLoggedIn, (req, res) => {
+    req.flash('error',`Oops! Can't place your order at the moment.Please try again after some time!`)
+    res.redirect('/user/cart');
 })
 
 module.exports = router;

@@ -3,7 +3,7 @@ const Product=require('../models/Product');
 // Product model ko isliye require kr rhe hai kyunki products show krne hai toh Product model ke andar se products  find krenge and then display on the page
 const {validateProduct,isLoggedIn,isSeller,isProductAuthor,validateUser}=require('../middleware');
 const {showAllProducts, productForm , createProduct , showProduct , editProductForm , updateProduct , deleteProduct} =  require('../controllers/product')
-const router =express.Router()// mini instance
+const router = express.Router()// mini instance
 
 router.get('/products', showAllProducts );
 

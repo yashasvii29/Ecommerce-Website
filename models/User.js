@@ -32,7 +32,14 @@ const userSchema = new mongoose.Schema({ // user ke liye wo schema define krenge
         //     img:   ,
         //     qty:
         // }
-    ]
+    ],
+    orders: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref:'Order'
+        }
+    ],
+
 
     // role means user ka role kya hai buyer hai ya seller hai
    })

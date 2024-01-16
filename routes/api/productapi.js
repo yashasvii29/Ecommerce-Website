@@ -21,7 +21,7 @@ router.post('/product/:productid/like' , isLoggedIn , async(req,res)=>{ // produ
     //     User.findByIdAndUpdate(req.user._id , {$addToSet:{wishList:productId}})
     // }
     // option m operator assign hoga 
-    const option = isLiked? '$pull' : '$addToSet';  // pull and add to set both are mongodb operator  
+    const option = isLiked? '$pull' : '$addToSet';  // pull and add to set both are mongodb operator  (array operator)
     // pull means to remove the element from the array and addtoset means to add element in the array
     //  if product liked hai(means true) to pull operator run hoga otherwise  addToset operator run hoga(means false)
     //the below code can be done by else if as well
