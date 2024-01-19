@@ -2,7 +2,7 @@ const cloudinary = require("cloudinary").v2;
 const fs =require('fs');
 // const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
-const dotenv =  require('dotenv').config();
+// const dotenv =  require('dotenv').config();
 
 // Cloudinary Configuration
 cloudinary.config({
@@ -22,6 +22,7 @@ const uploadOnCloudinary = async(filePath)=>{
  
         // file has been uploaded successfull
         console.log("file is uploaded on cloudinary",res.url);
+        fs.unlinkSync(filePath);
         return res;
     }
     catch(err){

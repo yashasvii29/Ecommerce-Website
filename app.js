@@ -19,8 +19,8 @@ const User=require('./models/User');
 const MongoStore=require('connect-mongo');
 const mongoSanitize = require('express-mongo-sanitize');
 const upload =require('./multer');
-// const cloudinary = require('cloudinaryConfig');
-// const multer = require('multer');
+const cloudinary = require('cloudinary');
+const multer = require('multer');
 
 // cookie-parser npm ka package so we will install first and after that we will require
 // mongoose.connect('mongodb://127.0.0.1:27017/Shopping-app')

@@ -48,7 +48,7 @@ const createProduct = async (req,res)=>{ //  jab y route hit hoga /products toh 
             await Product.create({name,img,price,desc,author:req.user._id})//  create mongodb ka method hai and y promise return krta hai to promise ki chaining se bachne ke liye we will use async and await
             // author can be buyer or seller (login krne ke baad navabr pr uss buyer ya seller ka name show hoga jisne bhi login kiya hai)
             // database ke andar new product add hone ke baad /products page pr redirect krenge
-            req.flash('success','Product edited successfully');
+            req.flash('success','Product added successfully');
             res.redirect('/products')// redirect means get req jayegi /products pr and sabhi products show ho jayenge with new product
     }
     catch(e){
@@ -130,5 +130,8 @@ const deleteProduct = async(req,res)=>{
 // module.exports=router;// router ko export kr rhe hai toh app.js file ke andar require krenge
 
 module.exports = {showAllProducts , productForm , createProduct , showProduct , editProductForm , updateProduct , deleteProduct }
+
+
+
 
 

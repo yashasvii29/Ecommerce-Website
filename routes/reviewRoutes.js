@@ -47,7 +47,7 @@ router.post('/products/:id/review',validateReview,isLoggedIn,async(req,res)=>{ /
     }
 });
 
-router.delete('/products/:productId/reviews/:reviewId',isLoggedIn,validateReview,isProductAuthor,async (req,res)=>{
+router.delete('/products/:productId/reviews/:reviewId',isLoggedIn,isProductAuthor,async (req,res)=>{
     try{
         let {productId} = req.params;
         console.log('delete reviw');

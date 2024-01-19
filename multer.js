@@ -5,28 +5,29 @@ const multer = require("multer");
 // file storage
 const storage = multer.diskStorage({
     destination: function (req,file,cb) {
-        cb(null,'./uploads/');
+        cb(null,'./uploads');
     },
     filename: function (req,file,cb){
-        cb(null,new Date().toISOString()+ '-'+file.originalname);
+        // const uniqueSuffix  = Date.now() + '-' + Math.round(Math.random()*1E9)
+        cb(null,file.originalname)
     }
 })
 
 // file validation
 
-const filterFilter  = (req,file,cb) =>{
-    if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
-        cb(null,true);
-    }
-    else{
-        cb({message:'Unsupported File format'},false);
-    }
-}
+// const filterFilter  = (req,file,cb) =>{
+//     if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
+//         cb(null,true);
+//     }
+//     else{
+//         cb({message:'Unsupported File format'},false);
+//     }
+// }
 
 const upload = multer({
     storage: storage,
-    limits:{fileSize:1024*1024},
-    fileFilter:filterFilter
+    // limits:{fileSize:1024*1024},
+    // fileFilter:filterFilter
 })
 
 
