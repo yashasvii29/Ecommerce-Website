@@ -42,7 +42,7 @@ const productSchema = Joi.object({
 // review ka schema
 const reviewSchema = Joi.object({
     rating: Joi.number().min(0).max(5).required(),
-    Comment: Joi.string().required().escapeHTML()
+    comment: Joi.string().required().escapeHTML()
 
 });
 

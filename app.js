@@ -18,6 +18,9 @@ const LocalStrategy=require('passport-local');
 const User=require('./models/User');
 const MongoStore=require('connect-mongo');
 const mongoSanitize = require('express-mongo-sanitize');
+const upload =require('./multer');
+// const cloudinary = require('cloudinaryConfig');
+// const multer = require('multer');
 
 // cookie-parser npm ka package so we will install first and after that we will require
 // mongoose.connect('mongodb://127.0.0.1:27017/Shopping-app')
@@ -110,7 +113,7 @@ const reviewRoutes=require('./routes/reviewRoutes');
 const authRoutes=require('./routes/authRoutes');
 const cartRoutes=require('./routes/cartRoutes');
 const productApi = require('./routes/api/productapi');
-const paymentRoutes = require('./routes/paymentRoutes');
+// const paymentRoutes = require('./routes/paymentRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 // authroutes banayenge for signup and login
 
@@ -124,7 +127,7 @@ app.use(reviewRoutes); // so that har incoming request ke liye path check hoga
 app.use(authRoutes); // so that har incoming request ke liye path check hoga
 app.use(cartRoutes);// so that har incoming request ke liye path check hoga
 app.use(productApi);
-app.use(paymentRoutes);
+// app.use(paymentRoutes);
 app.use(orderRoutes);
 
 const port = 8080;
@@ -141,11 +144,17 @@ app.listen(port,()=>{
 
 //WAY FORWARD FOR E-COMMERCE SITE......
 
-// 1.Delete a Review.
-// 2.Remove item from cart.
-// 3.Uploading Images using Cloudinary and Multer Middleware.
+// 1.Delete a Review.(done)
+// 2.Remove item from cart.(done)
+// 3.Uploading Images to Cloudinary using Multer Middleware.(done)
 // 4.Authentication using Google,Facebook.
 // 5.Search Product
 // 6.Sort Product according to Price 
 // 7.Add Filters
 // 8.Add profile of the User.
+
+
+
+
+// sign in on cloudinary account
+// install the dependencies  => npm install cloudinary multer multer-storage-cloudinary

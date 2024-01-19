@@ -1,5 +1,6 @@
 const express=require('express');
 const Product=require('../models/Product');
+// const upload = require('../multer');
 // Product model ko isliye require kr rhe hai kyunki products show krne hai toh Product model ke andar se products  find krenge and then display on the page
 const {validateProduct,isLoggedIn,isSeller,isProductAuthor,validateUser}=require('../middleware');
 const {showAllProducts, productForm , createProduct , showProduct , editProductForm , updateProduct , deleteProduct} =  require('../controllers/product')
@@ -22,6 +23,8 @@ router.patch('/products/:id', isLoggedIn, isProductAuthor, validateProduct, upda
 
 router.delete('/products/:id',isLoggedIn,isProductAuthor,deleteProduct);
 
+
+// router.post("/uploadImage",isLoggedIn,isProductAuthor,upload);
 
 module.exports = router;
 // validateProduct middleware ko require kr rhe hai form middleware.js file

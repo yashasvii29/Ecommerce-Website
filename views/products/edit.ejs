@@ -23,7 +23,8 @@
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Image Url: </label>
-                <input type="text" class="form-control" name="img" id="imge" placeholder="Image URL of Product" value="<%=foundProduct.img%>" required>
+                <input type="file" class="form-control" name="img" id="imge" placeholder="Choose file" required>
+                <button type="submit" class="btn btn-sm btn-success mt-3">Upload</button>
                  <!-- looks good validator -->
                  <div class="valid-feedback">
                     Looks good!

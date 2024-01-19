@@ -10,7 +10,8 @@ const {validateReview,isLoggedIn, isProductAuthor}=require('../middleware');
 // express provide mini instance (router) we will use router 
 const router =express.Router()// mini instance
 // har router m try catch ka use krenge to handle the error
-router.post('/products/:id/review',isLoggedIn, async(req,res)=>{ //  jab y route hit hoga /products/:id/review toh validateReview middleware chalega in middleware.js file and if review validate hone ke baad error nhi aaya toh uss file m next() chalega means iss route m jo callback fun hai validateProduct middleware ke baad wo run hoga
+// const {validateReview,isLoggedIn, isProductAuthor}=require('../middleware');
+router.post('/products/:id/review',validateReview,isLoggedIn,async(req,res)=>{ //  jab y route hit hoga /products/:id/review toh validateReview middleware chalega in middleware.js file and if review validate hone ke baad error nhi aaya toh uss file m next() chalega means iss route m jo callback fun hai validateProduct middleware ke baad wo run hoga
     // console.log(req.body);
     try{
         console.log(req.params)
@@ -46,7 +47,7 @@ router.post('/products/:id/review',isLoggedIn, async(req,res)=>{ //  jab y route
     }
 });
 
-router.delete('/products/:productId/reviews/:reviewId',isLoggedIn,isProductAuthor,async (req,res)=>{
+router.delete('/products/:productId/reviews/:reviewId',isLoggedIn,validateReview,isProductAuthor,async (req,res)=>{
     try{
         let {productId} = req.params;
         console.log('delete reviw');
@@ -54,13 +55,14 @@ router.delete('/products/:productId/reviews/:reviewId',isLoggedIn,isProductAutho
         let product = await Product.findById(productId);
         let {reviewId} =req.params;
          await Review.findByIdAndDelete(reviewId);
-         await Product.findByIdAndUpdate(productId,{['$pull']:{reviews:reviewId}});
+         await Product.findByIdAndUpdate(productId,{['$pull']:{reviews:reviewId}}, {new:true});
+        //  Product ke database m se uss product ko find krenge jiske review ko delete krna hai then uss product ke reviews array m se uss reviewId ko delete kr denge
          // pull means to remove the element from the array .. it is a mongodb array operator
          req.flash('success','Reviews deleted Successfully');
          res.redirect(`/products/${productId}`);
     }
     catch(e){
-        console.log('error')
+        // console.log('error')
         res.status(500).render('error',{err:e.message});
     }
 })
