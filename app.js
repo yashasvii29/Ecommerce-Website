@@ -18,7 +18,7 @@ const LocalStrategy=require('passport-local');
 const User=require('./models/User');
 const MongoStore=require('connect-mongo');
 const mongoSanitize = require('express-mongo-sanitize');
-const upload =require('./multer');
+// const upload =require('./multer');
 // const cloudinary = require('cloudinary');
 // const multer = require('multer');
 
