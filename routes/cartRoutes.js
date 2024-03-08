@@ -3,7 +3,6 @@ const router=express.Router();//mini instance
 const {isLoggedIn}=require('../middleware');
 const User=require('../models/User');
 const Product=require('../models/Product');
-
 // route to see the cart
 // jab user /user/cart pr req krega toh res m cart page show hoga and cart.ejs page pr currentuser ka data bhej rhe hai(data means wo user and uski cart bhej rhe hai)
 router.get('/user/cart',isLoggedIn,async(req,res)=>{
@@ -19,10 +18,7 @@ router.get('/user/cart',isLoggedIn,async(req,res)=>{
     catch(e){
         res.status(500).render('error',{err:e.message});
     }
-   
-
 })
-
 // actually adding the product to the cart
 // ja user add to cart button pr click krega toh y route hit hoga
 // jab user product ko cart m add krega means add to cart button pr click krega toh user ke cart m wo product add ho jayega...user ke cart m product ki id aa jayegi(means cart array m uss product ki id store ho jayegi)
@@ -37,11 +33,9 @@ router.post('/user/:productId/add',isLoggedIn,async(req,res)=>{
     await user.save();
     res.redirect('/user/cart');
     }
-
     catch(e){
         res.status(500).render('error',{err:e.message});
-    }
-    
+    }    
 })
 //  to delete the product form the cart
 router.delete('/user/:productId',isLoggedIn,async(req,res)=>{
@@ -54,15 +48,12 @@ router.delete('/user/:productId',isLoggedIn,async(req,res)=>{
         await User.findByIdAndUpdate(userId,{['$pull']:{cart:productId}}, {new:true});
         res.redirect('/user/cart');
     }
-
-    catch(e){
+    catch(e)
+    {
         res.status(500).render('error',{err:e.message});
     }
-        
-
 })
 module.exports=router;
-
-
 // cart user ki hoti hai(buyer ki hoti hai)..add to cart means user product ko cart m add kr lega
 // cart ke andar product ki ids store hongi
+
