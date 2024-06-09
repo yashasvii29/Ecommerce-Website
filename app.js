@@ -158,3 +158,11 @@ app.listen(port,()=>{
 
 // sign in on cloudinary account
 // install the dependencies  => npm install cloudinary multer multer-storage-cloudinary
+
+
+// jab hume kisi particular cheez ko show krna hai find krna hai (like kisi product ko ya kisi order ko ya commnet ko ya review ko) to hum _id ka use krte hai(By default, Mongoose adds an _id property to  schemas.)...hum req.params se uss ki _id find krte h and uss id ki help se database m se find krte hai and then show krte hai
+// mongoose _id property provide krta hai to the schemas
+// jab hum collection m means model m koi document create krte hai(means data) toh mongoose bydefault uss document m ek _id property add krta hai..._id means unique id jiski help se hum database m se means uss collection m se model m se kisi bhi particular document ko means data ko find kr sakte hai
+// router.get('/products/productId');
+// localhost:8080/products/product._id
+// means hum 

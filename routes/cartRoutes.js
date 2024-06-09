@@ -18,6 +18,7 @@ router.get('/user/cart',isLoggedIn,async(req,res)=>{
     catch(e){
         res.status(500).render('error',{err:e.message});
     }
+    
 })
 // actually adding the product to the cart
 // ja user add to cart button pr click krega toh y route hit hoga

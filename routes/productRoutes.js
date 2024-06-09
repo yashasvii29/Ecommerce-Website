@@ -6,8 +6,7 @@ const {validateProduct,isLoggedIn,isSeller,isProductAuthor,validateUser}=require
 const {showAllProducts, productForm , createProduct , showProduct , editProductForm , updateProduct , deleteProduct} =  require('../controllers/product')
 const router = express.Router()// mini instance
 
-router.get('/products', showAllProducts );
-
+router.get('/products', showAllProducts);
 
 router.get('/product/new', isLoggedIn, isSeller, productForm);
 
@@ -15,11 +14,9 @@ router.post('/products', isLoggedIn, isSeller, validateProduct, createProduct);
 
 router.get('/products/:id', isLoggedIn, showProduct);
 
-
 router.get('/products/:id/edit',isLoggedIn,isProductAuthor, editProductForm);
 
 router.patch('/products/:id', isLoggedIn, isProductAuthor, validateProduct, updateProduct);
-
 
 router.delete('/products/:id',isLoggedIn,isProductAuthor,deleteProduct);
 
