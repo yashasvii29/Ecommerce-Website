@@ -34,7 +34,7 @@ const Joi = BaseJoi.extend(extension);
 // product ka schema 
 const productSchema = Joi.object({
     name: Joi.string().required().escapeHTML(),
-    img: Joi.string().required().escapeHTML(),
+    image: Joi.string().required().escapeHTML(),
     price: Joi.string().min(0).required(),
     desc: Joi.string().required().escapeHTML()
 

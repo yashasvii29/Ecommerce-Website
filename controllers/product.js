@@ -1,6 +1,6 @@
 // routes ko controllers m change kr denge
-
 const express=require('express');
+const uploadImageOnCloudinary = require('../cloudinaryConfig');
 const Product=require('../models/Product');
 // Product model ko isliye require kr rhe hai kyunki products show krne hai toh Product model ke andar se products  find krenge and then display on the page
 // const {validateProduct,isLoggedIn,isSeller,isProductAuthor,validateUser}=require('../middleware');
@@ -9,6 +9,7 @@ const Product=require('../models/Product');
 // we cant write app.get and app.post here
 // express provide mini instance (router) we will use router 
 // const router =express.Router()// mini instance
+
 // 1st route=> to show all the products
 // har router m try catch block ka use krenge to handle the error
 const showAllProducts=async(req,res)=>{// jab user /products pr req send krega toh sabse pehle isLoggedIn middleware chalega in middleware.js file and iss middleware m check krenge if user login hai means loggedin hai toh it will return true
@@ -43,9 +44,33 @@ const productForm=(req,res)=>{
 const createProduct = async (req,res)=>{ //  jab y route hit hoga /products toh validateProduct middleware chalega in middleware.js file and if product validate hone ke baad error nhi aaya toh uss file m next() chalega means iss route m jo callback fun hai validateProduct middleware ke baad wo run hoga
     try{
             // jab form submit hoga toh sara data req ki body m milega ....toh unn sabhi data ko object ke andar destructure krenge....(object ke andar vahi name likhte h jo humne schema m define kiya h)
-            let {name,img,price,desc}=req.body;  // body object ke data ko dekhne ke liye we will use the middleware app.use(express.urlencoded)
+            let {name,price,desc}=req.body;  // body object ke data ko dekhne ke liye we will use the middleware app.use(express.urlencoded)
+            const image = req.file?.filename;
+            const imagePath=req.file?.path;
+            console.log(req.file);
+
+            // uploading image on cloudinary
+            // cloudinary pr image uplaod hone ke baad ek secure url milta hai and public id
+           const {secure_url,public_id} = await uploadImageOnCloudinary(imagePath,"products");
+
+           if(!secure_url){
+            res.status(400).json({msg:'Error while uplaoding image on cloudinary'});
+           }
             // database ke andar new product ko add krenge...means Product model ke andar new product create krenge and req.user object ke andar currentuser ki sari information hoti hai jo abhi login hua hai toh req.user._id se currentuser ki id(objectid) author m assign kr denge means jo user abhi loggedin hua hai uski id author m assign kr denge...toh jab hum ek new product banayenge toh usme author ki id bhi store hogi
-            await Product.create({name,img,price,desc,author:req.user._id})//  create mongodb ka method hai and y promise return krta hai to promise ki chaining se bachne ke liye we will use async and await
+           const newProduct =  await Product.create({name,price,desc,author:req.user._id,
+                image:{
+                    secure_url,
+                    public_id
+                }
+                }); // create method ko call krne ke
+
+                if (!newProduct) {
+                    console.error('Error while creating product in the database');
+                    return res.status(400).json({ msg: 'Error while creating product in the database' });
+                }
+
+                console.log('Product added successfully:', newProduct);
+            //  create mongodb ka method hai and y promise return krta hai to promise ki chaining se bachne ke liye we will use async and await
             // author can be buyer or seller (login krne ke baad navabr pr uss buyer ya seller ka name show hoga jisne bhi login kiya hai)
             // database ke andar new product add hone ke baad /products page pr redirect krenge
             req.flash('success','Product added successfully');
@@ -99,8 +124,8 @@ const editProductForm = async(req,res)=>{ // isLoggedIn is a middleware iska use
  const updateProduct = async(req,res)=>{
     try{
         let {id} =req.params;
-    let {name,img,price,desc}=req.body;
-    await Product.findByIdAndUpdate(id,{name,img,price,desc});// Product model(database) ke andar se uss product ko find krenge jise edit kiya hai ById and update kr denge
+    let {name,image,price,desc}=req.body;
+    await Product.findByIdAndUpdate(id,{name,image,price,desc});// Product model(database) ke andar se uss product ko find krenge jise edit kiya hai ById and update kr denge
     req.flash('success','Product edited successfully');// product m edit krne ke baad y success message flash hoga means display hoga/popup hoga message edited successfully
     res.redirect(`/products/${id}`);// id ko evaluate krne ke liye backtick ka use kiya h ...product ko edit krne ke baad (means edit product button pr click krte hi usi particular product pr redirect kr jayenge jise edit kiya h isliye redirect method m uss product ki id di h)
     }
@@ -127,11 +152,6 @@ const deleteProduct = async(req,res)=>{
     }
 }
 
+
 // module.exports=router;// router ko export kr rhe hai toh app.js file ke andar require krenge
-
 module.exports = {showAllProducts , productForm , createProduct , showProduct , editProductForm , updateProduct , deleteProduct }
-
-
-
-
-

@@ -2,98 +2,109 @@
 <!-- layout function ke neeche jo bhi likhenge wo body m pass ho jayega -->
 <% layout('layouts/boilerplate') %>
 
-
 <!-- new page pr form create kiya hai so we will add client side validation -->
 <div class="row">
-    <div class="col-6 mx-auto">
-        <form action="/products" method="POST" class="needs-validation" novalidate >
-            <!-- novalidate y attibute default validation ko rok dega means required attribute ki exixtence ko khatam kr dega -->
-            <!--csv m y steps follow krenge=> input m required attribute ka use krenge toh form ko novalidate attribute denge and form ko class denge needs-validation and last m div ke baad script tag ke andar javascript ka code likhenge from bootstrap validation....this is client side validation-->
-            <div class="mb-3">
-                <label for="name" class="form-label">Name: </label>
-                <input type="text" class="form-control" name="name" id="naam" placeholder="Name of Product" required>
-                 <!-- looks good validator -->
-                <div class="valid-feedback">
-                    Looks good!
-                  </div>
-                  <!-- error validator -->
-                  <div class="invalid-feedback">
-                    Please choose a product name.
-                  </div>
-                <!-- name attribute m vahi likhte hai jo humne schema m likha hai -->
-            </div>
-            <div class="mb-3">
-                <label for="image" class="form-label">Image Url: </label>
-                <!--  validation ka use form m krte h...validation is of two types client side validation and server side validation -->
-                <!-- csv means input filed empty nhi hona chahiye and like age cant be negative these are the csv......and ssv hum schema m define krte hai jab hum schema banate hai for ex=> humne schema m define kiya hai name ka type string hai toh name m string hi denge number nhi de sakte this is server side valiadtion-->
-                <!-- validation ke liye we will add required attribute in input and required is a default validator-->
-                <!-- required means input field ko fill krna mandatory hai use empty nhi chod sakte otherwise we cant submit the form -->
-                <!-- required is a client side validation and csv browser pr kr rhe hai bcz form browser pr submit hoga -->
-                <input type="img" class="form-control" name="img" id="imge" placeholder="Choose image" required>
-                <!-- <button type="submit" class="btn btn-sm btn-success mt-3">Upload</button> -->
-                <!-- looks good validator -->
-                <div class="valid-feedback">
-                    Looks good!
-                  </div>
-                  <!-- error validator -->
-                  <div class="invalid-feedback">
-                    Please choose a image url.
-                  </div>
-            </div>
-            <div class="mb-3">
-                <label for="paisa" class="form-label">Price: </label>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">Rs. </span>
-                    <input class="form-control" type="number" name="price" id="paisa" step="any" placeholder="Price of Product" required>
-                    <!-- looks good validator -->
-                <div class="valid-feedback">
-                    Looks good!
-                  </div>
-                  <!-- error validator -->
-                  <div class="invalid-feedback">
-                    Please choose a price.
-                  </div>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label for="desc" class="form-label">Description: </label>
-                <textarea class="form-control"  name="desc" id="des" rows="5" placeholder="Description of Product" required></textarea>
-                 <!-- looks good validator -->
-                 <div class="valid-feedback">
-                  Looks good!
-                </div>
-                <!-- error validator -->
-                <div class="invalid-feedback">
-                  Please choose a description.
-                </div>
-            </div>
-            <button type="submit" class="btn btn-sm btn-success">Add Product</button>
-            <!-- add product button pr click krte hi post request jayegi /products pr jo humne form define kiya hai in action attribute-->
-        </form>
-    </div>
+  <div class="col-6 mx-auto">
+    <form action="/products" method="POST" class="needs-validation" novalidate enctype="multipart/form-data">
+      <!-- novalidate y attribute default validation ko rok dega means required attribute ki exixtence ko khatam kr dega -->
+      <!-- csv m y steps follow krenge=> input m required attribute ka use krenge toh form ko novalidate attribute denge and form ko class denge needs-validation and last m div ke baad script tag ke andar javascript ka code likhenge from bootstrap validation....this is client side validation-->
+      <div class="mb-3">
+        <label for="name" class="form-label">Name: </label>
+        <input type="text" class="form-control" name="name" id="naam" placeholder="Name of Product" required>
+        <!-- looks good validator -->
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+        <!-- error validator -->
+        <div class="invalid-feedback">
+          Please choose a product name.
+        </div>
+        <!-- name attribute m vahi likhte hai jo humne schema m likha hai -->
+      </div>
+
+      <div class="mb-3">
+        <label for="image" class="form-label">Image Url: </label>
+        <input type="file" class="form-control" name="image" id="image" placeholder="Choose image" required>
+        <div id="uploadedImageContainer" class="mt-3">
+          <!-- Uploaded image will be displayed here -->
+        </div>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+        <div class="invalid-feedback">
+          Please choose an image URL.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="paisa" class="form-label">Price: </label>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Rs. </span>
+          <input class="form-control" type="number" name="price" id="paisa" step="any" placeholder="Price of Product" required>
+          <!-- looks good validator -->
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+          <!-- error validator -->
+          <div class="invalid-feedback">
+            Please choose a price.
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="desc" class="form-label">Description: </label>
+        <textarea class="form-control" name="desc" id="des" rows="5" placeholder="Description of Product" required></textarea>
+        <!-- looks good validator -->
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+        <!-- error validator -->
+        <div class="invalid-feedback">
+          Please choose a description.
+        </div>
+      </div>
+      <button type="submit" class="btn btn-sm btn-success">Add Product</button>
+      <!-- add product button pr click krte hi post request jayegi /products pr jo humne form define kiya hai in action attribute-->
+    </form>
+  </div>
 </div>
+
 <script>
-  <!-- script ke andar ka code bootstrap se liya hai from validation -->
-    (function () {
-        'use strict'
-      
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.querySelectorAll('.needs-validation')
-      
-        // Loop over them and prevent submission
-        Array.prototype.slice.call(forms)
-          .forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-              if (!form.checkValidity()) {
-                event.preventDefault()
-                event.stopPropagation()
-              }
-      
-              form.classList.add('was-validated')
-            }, false)
-          })
-      })()
+  // Bootstrap validation script
+  (function () {
+    'use strict'
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll('.needs-validation')
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          form.classList.add('was-validated')
+        }, false)
+      })
+  })()
 </script>
+
+<script>
+  document.querySelector('form').addEventListener('submit', async function (event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+    const response = await fetch(this.action, {
+      method: this.method,
+      body: formData
+    });
+    const result = await response.json();
+    if (result.file && result.file.image) {
+      const imageContainer = document.getElementById('uploadedImageContainer');
+      imageContainer.innerHTML = `<img src="${result.file.image}" alt="Uploaded Image" class="img-fluid" />`;
+    }
+  });
+</script>
+
 <!-- jab bhi koi new file banayenge like new.ejs, show.ejs...toh usme  index.ejs file ka complete code copy paste kr denge then jo code change krna hai use change kr denge -->
 <!-- server side valiadtion backend m hota hai ..hum frontend m toh ja sakte hai but backend m nhi ja sakte so we will use joi package for ssv-->
 <!-- for server side validation we need joi and for server side validation we will make new schema according to the joi -->

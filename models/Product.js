@@ -6,9 +6,16 @@ const productSchema = new mongoose.Schema({
         trim:true,
         required:true
     } ,
-    img:{
-        type:String,
-        trim:true
+    image:{
+        secure_url:{
+            type:String,
+            trim:true
+        },
+        public_id:{
+            type:String,
+            required:true
+        }
+       
     } ,
     price: {
         type:Number,
