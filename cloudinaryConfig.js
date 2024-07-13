@@ -40,6 +40,10 @@ const uploadImageOnCloudinary = async(filePath,folderName) =>{
     console.log("Cloudinary upload error:", error);
     throw new Error("Failed to upload image to Cloudinary");
   }
+
+  finally{
+    console.log("Image uploaded to Cloudinary successfully");
+  }
 }
 module.exports = uploadImageOnCloudinary;
 

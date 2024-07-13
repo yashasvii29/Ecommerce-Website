@@ -56,6 +56,7 @@ router.post('/login',
         failureMessage: true }),
     (req,res)=>{
         console.log(req.user);// req ke andar user ka object hota hai and iss object ke andar currentuser jisne abhi login kiya hai uski sari information means sara data hota hai
+        
     req.flash('success',`Welcome back ${req.user.username}`);
     res.redirect('/products');// login krne ke baad products page pr redirect ho jayenge
 // jab login button pr click krenge toh products page pr redirect ho jayenge

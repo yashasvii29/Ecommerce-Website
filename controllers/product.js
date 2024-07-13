@@ -43,21 +43,28 @@ const productForm=(req,res)=>{
  //add product button pr click krte hi post request jayegi /products pr jo humne form define kiya hai in action attribute
 const createProduct = async (req,res)=>{ //  jab y route hit hoga /products toh validateProduct middleware chalega in middleware.js file and if product validate hone ke baad error nhi aaya toh uss file m next() chalega means iss route m jo callback fun hai validateProduct middleware ke baad wo run hoga
     try{
+        console.log("create")
+
+        console.log("File received:", req.file);
+         // Check if file was uploaded successfully
+        if (!req.file) {
+            return res.status(400).json({ msg: 'No file uploaded' });
+        }
+        // Upload image to Cloudinary
+        const uploadResult = await uploadImageOnCloudinary(req.file.path, 'products');
+        console.log("Cloudinary upload result:", uploadResult);
+    //   const file = {
+    //       image: uploadResult.secure_url
+    //   };
+
+    // Extract necessary data from Cloudinary response
+        const { secure_url, public_id } = uploadResult;
             // jab form submit hoga toh sara data req ki body m milega ....toh unn sabhi data ko object ke andar destructure krenge....(object ke andar vahi name likhte h jo humne schema m define kiya h)
-            let {name,price,desc}=req.body;  // body object ke data ko dekhne ke liye we will use the middleware app.use(express.urlencoded)
-            const image = req.file?.filename;
-            const imagePath=req.file?.path;
-            console.log(req.file);
-
-            // uploading image on cloudinary
-            // cloudinary pr image uplaod hone ke baad ek secure url milta hai and public id
-           const {secure_url,public_id} = await uploadImageOnCloudinary(imagePath,"products");
-
-           if(!secure_url){
-            res.status(400).json({msg:'Error while uplaoding image on cloudinary'});
-           }
+            const {name,price,desc}=req.body;  // body object ke data ko dekhne ke liye we will use the middleware app.use(express.urlencoded)
+          
             // database ke andar new product ko add krenge...means Product model ke andar new product create krenge and req.user object ke andar currentuser ki sari information hoti hai jo abhi login hua hai toh req.user._id se currentuser ki id(objectid) author m assign kr denge means jo user abhi loggedin hua hai uski id author m assign kr denge...toh jab hum ek new product banayenge toh usme author ki id bhi store hogi
-           const newProduct =  await Product.create({name,price,desc,author:req.user._id,
+           const newProduct =  await Product.create({
+            name,price,desc,author:req.user._id,
                 image:{
                     secure_url,
                     public_id
@@ -78,8 +85,10 @@ const createProduct = async (req,res)=>{ //  jab y route hit hoga /products toh 
     }
     catch(e){
         // e object m error hota hai toh err ko catch krenge and e object m message field bhi hota hai toh error ke message ko bhi bhejenge
-        res.status(500).render('error',{err:e.message});
-    }
+        console.error(error);
+    return res.status(500).json({ msg: 'Something went wrong', error: error.message });
+}
+
 }
 // pehle se likha hua code show ho rha hai toh enter tab
 // 4th route=> to show a particular product

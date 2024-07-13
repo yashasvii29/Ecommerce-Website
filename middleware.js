@@ -8,6 +8,7 @@ const {productSchema,reviewSchema,userSchema} =require('./schema');// productsch
 // isLoggedIn middleware ko har route m pass krenge in productRoutes
 const isLoggedIn =(req,res,next)=>{  // user authenticate hai ya nhi (loggedin hai ya nhi means login hai ya nhi) y check krne ke liye middleware ka use krenge we will use isAuthenticated method y method boolean value return krta hai if it returns true  means user loggedin hai authenticate hai ...and if it returns false means loggedin nhi hai
     // req.xhr ka use krte h to check whether the request is ajax or not
+    console.log("login")
     console.log(req.xhr); // true means xhr req send kr rhe hai
     if(req.xhr && !req.isAuthenticated()){
         // if(req.session.returnUrl){
@@ -25,8 +26,12 @@ const isLoggedIn =(req,res,next)=>{  // user authenticate hai ya nhi (loggedin h
 
 
 const validateProduct=(req,res,next)=>{
-    let {name,img,price,desc}=req.body;
-    const {error} =productSchema.validate({name,img,price,desc});  // schema(product ke schema) ko validate kr rhe hai...validate method return two things  err and value but hum only err ko destructure krte hai
+    console.log("validate")
+    let {name,price,desc}=req.body;
+    const {error} =productSchema.validate({name,price,desc});
+    console.log(error);
+    
+    // schema(product ke schema) ko validate kr rhe hai...validate method return two things  err and value but hum only err ko destructure krte hai
     if(error){
         const msg = error.details.map((err)=>err.message).join(',');
         return res.render('error' , {err:msg});
@@ -53,6 +58,7 @@ const validateReview=(req,res,next)=>{
 
 
 const isSeller = (req,res,next)=>{
+    console.log("enter")
     if(!req.user.role){   // if user ka koi role nhi hai then he dont have access to do anything 
         req.flash('error','You dont have the permission to do that');
         return res.redirect('/products');

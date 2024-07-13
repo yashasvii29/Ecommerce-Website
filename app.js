@@ -116,7 +116,7 @@ const productApi = require('./routes/api/productapi');
 // const paymentRoutes = require('./routes/paymentRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 // authroutes banayenge for signup and login
-const uploadRoutes=require('./routes/upload/uploadRoutes');
+// const uploadRoutes=require('./routes/upload/uploadRoutes');
 
 
 app.get('/',(req,res)=>{
@@ -128,7 +128,7 @@ app.use(reviewRoutes); // so that har incoming request ke liye path check hoga
 app.use(authRoutes); // so that har incoming request ke liye path check hoga
 app.use(cartRoutes);// so that har incoming request ke liye path check hoga
 app.use(productApi);
-app.use(uploadRoutes);
+// app.use(uploadRoutes);
 // app.use(paymentRoutes);
 app.use(orderRoutes);
 
