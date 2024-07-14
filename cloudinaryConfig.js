@@ -1,5 +1,6 @@
 
 const cloudinary = require('cloudinary').v2;
+const { log } = require('console');
 const fs = require('fs');
 // require('dotenv').config();
 
@@ -20,6 +21,7 @@ const uploadImageOnCloudinary = async(filePath,folderName) =>{
 
     // delete image from server
     try{
+      console.log("delete image from localserver")
       fs.unlinkSync(filePath);
 
     }

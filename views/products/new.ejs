@@ -89,7 +89,7 @@
   })()
 </script>
 
-<script>
+<!-- <script>
   document.querySelector('form').addEventListener('submit', async function (event) {
     event.preventDefault();
     const formData = new FormData(this);
@@ -98,12 +98,18 @@
       body: formData
     });
     const result = await response.json();
-    if (result.file && result.file.image) {
+    console.log(result); // Check what the server returns
+
+    if (result.image) {
       const imageContainer = document.getElementById('uploadedImageContainer');
-      imageContainer.innerHTML = `<img src="${result.file.image}" alt="Uploaded Image" class="img-fluid" />`;
+      imageContainer.innerHTML = `<img src="${result.image}" alt="Uploaded Image" class="img-fluid" />`;
+    } else if (result.msg) {
+      alert(result.msg); // Show any messages returned from the server
     }
   });
-</script>
+</script> -->
+
+
 
 <!-- jab bhi koi new file banayenge like new.ejs, show.ejs...toh usme  index.ejs file ka complete code copy paste kr denge then jo code change krna hai use change kr denge -->
 <!-- server side valiadtion backend m hota hai ..hum frontend m toh ja sakte hai but backend m nhi ja sakte so we will use joi package for ssv-->

@@ -17,6 +17,7 @@ const showAllProducts=async(req,res)=>{// jab user /products pr req send krega t
         //1... Database m se data show krne ke liye pehle uss model(collection) ke anadr se data (products array) find krenge then data ko index page pr bhejenge
     // 2...Product ke model(collection ) ke andar se products find krenge(means database m se data find krenge) and find() mongoose ka method hai (means db ka crud method hai) and y methods promise return krte hai ....promise ki chaining se bachne ke liye we will use async await
     let products=await Product.find({});
+    //  res.status(200).json({ msg: 'Show all products' });
     // find method jo bhi return krega use ek products variable m store kr lenge and uss variable ko render method m object ke andar pass kr denge
     res.render('products/index',{products});
     // index ki file products folder ke andar hai that's why products/index
@@ -77,10 +78,12 @@ const createProduct = async (req,res)=>{ //  jab y route hit hoga /products toh 
                 }
 
                 console.log('Product added successfully:', newProduct);
+                // return res.status(200).json({ msg: 'new product addedd' });
             //  create mongodb ka method hai and y promise return krta hai to promise ki chaining se bachne ke liye we will use async and await
             // author can be buyer or seller (login krne ke baad navabr pr uss buyer ya seller ka name show hoga jisne bhi login kiya hai)
             // database ke andar new product add hone ke baad /products page pr redirect krenge
             req.flash('success','Product added successfully');
+            console.log("redirect to products page")
             res.redirect('/products')// redirect means get req jayegi /products pr and sabhi products show ho jayenge with new product
     }
     catch(e){
