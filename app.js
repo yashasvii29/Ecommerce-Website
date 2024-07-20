@@ -1,5 +1,5 @@
 if(process.env.NODE_ENV !==' production'){
-    require('dotenv').config();
+    require('dotenv').config({path:__dirname+"/.env"});
 }
 
 const express=require('express');
@@ -24,14 +24,15 @@ const mongoSanitize = require('express-mongo-sanitize');
 
 // cookie-parser npm ka package so we will install first and after that we will require
 // mongoose.connect('mongodb://127.0.0.1:27017/Shopping-app')
+ 
 const dbURL = process.env.dbURL;
-
 mongoose.set('strictQuery',true);
-mongoose.connect(dbURL)
+
+mongoose.connect(dbURL,{family:4}) 
 .then(()=>{
-    console.log("DB Connected successfully")
+    console.log("DB Connected successfully") 
 })
-.catch(()=>{
+.catch((err)=>{
     console.log("DB error");
     console.log(err);
 })
