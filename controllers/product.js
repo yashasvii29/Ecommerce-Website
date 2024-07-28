@@ -1,6 +1,6 @@
 // routes ko controllers m change kr denge
 const express=require('express');
-const uploadImageOnCloudinary = require('../cloudinaryConfig');
+const {uploadImageOnCloudinary,deleteImageFromCloudinary} = require('../cloudinaryConfig');
 const Product=require('../models/Product');
 // Product model ko isliye require kr rhe hai kyunki products show krne hai toh Product model ke andar se products  find krenge and then display on the page
 // const {validateProduct,isLoggedIn,isSeller,isProductAuthor,validateUser}=require('../middleware');
@@ -20,6 +20,7 @@ const showAllProducts=async(req,res)=>{// jab user /products pr req send krega t
     //  res.status(200).json({ msg: 'Show all products' });
     // find method jo bhi return krega use ek products variable m store kr lenge and uss variable ko render method m object ke andar pass kr denge
     res.render('products/index',{products});
+    // res.status(200).json({products});
     // index ki file products folder ke andar hai that's why products/index
     // render method m {} ke andar products variable pass kiya hai which means index.ejs file ke andar products data bhej rhe hai......jab user /products page pr req send krega toh response m index page show hoga and index page pr products(means y data bhej rhe hai)
     }
@@ -118,6 +119,8 @@ const editProductForm = async(req,res)=>{ // isLoggedIn is a middleware iska use
     try{
         let {id}=req.params;
         let foundProduct= await Product.findById(id);
+        console.log(foundProduct);
+        //  res.status(200).json({foundProduct});
         res.render('products/edit',{foundProduct});
     }
     catch(e){
@@ -133,20 +136,57 @@ const editProductForm = async(req,res)=>{ // isLoggedIn is a middleware iska use
 
 // 6th route=> to edit the product in database(means Product model m)
 // jab edit product button pr click krenge toh patch req jayegi iss url pr  /products/:id/edit
- const updateProduct = async(req,res)=>{
-    try{
-        let {id} =req.params;
-    let {name,image,price,desc}=req.body;
-    await Product.findByIdAndUpdate(id,{name,image,price,desc});// Product model(database) ke andar se uss product ko find krenge jise edit kiya hai ById and update kr denge
-    req.flash('success','Product edited successfully');// product m edit krne ke baad y success message flash hoga means display hoga/popup hoga message edited successfully
-    res.redirect(`/products/${id}`);// id ko evaluate krne ke liye backtick ka use kiya h ...product ko edit krne ke baad (means edit product button pr click krte hi usi particular product pr redirect kr jayenge jise edit kiya h isliye redirect method m uss product ki id di h)
-    }
-    catch(e){
-        // e object m error hota hai toh err ko catch krenge and e object m message field bhi hota hai toh error ke message ko bhi bhejenge
-        res.status(500).render('error',{err:e.message});
-    }
+ // Route to handle product update
+ const updateProduct = async (req, res) => {
+    try {
+        console.log("updateProduct");
+        const { id } = req.params;
+        const { name, price, desc } = req.body;
+        console.log(req.body);
 
+        // Find the existing product
+        const product = await Product.findById(id);
+        if (!product) {
+            return res.status(404).json({ msg: 'Product not found' });
+        }
+
+        // Check if a new file is uploaded
+        if (req.file) {
+            // Delete the old image from Cloudinary
+            if (product.image.public_id) {
+                await deleteImageFromCloudinary(product.image.public_id);
+            }
+
+            // Upload new image to Cloudinary
+            const uploadResult = await uploadImageOnCloudinary(req.file.path, 'products');
+            product.image.secure_url = uploadResult.secure_url;
+            product.image.public_id = uploadResult.public_id;
+        } else {
+            // If no new image is uploaded, retain the existing image details
+            product.image.secure_url = product.image.secure_url;
+            product.image.public_id = product.image.public_id;
+        }
+
+        // Update product details
+        product.name = name;
+        product.price = price;
+        product.desc = desc;
+
+        // Save the updated product
+        const updatedProduct = await product.save();
+        if (!updatedProduct) {
+            return res.status(400).json({ msg: 'Error while updating product in the database' });
+        }
+
+        req.flash('success', 'Product edited successfully');
+        res.redirect(`/products/${id}`); // Redirect to the edited product page
+    } catch (e) {
+        console.error(e);
+    }
 }
+
+
+
 // 7th route=> to delete a particular product(delete krne ke liye post req ko delete req m override krenge means method override krenge and req send krne ke liye hume form ki need hoti hai so we will make delete form in the indes.ejs file)
 // database ke andar se product delete krna hai means post req jayegi but hum method override krenge...post req ko delete req m override kr denge and we will send delete request and product delete krne ke baad redirect krenge
 

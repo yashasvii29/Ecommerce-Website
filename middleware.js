@@ -26,13 +26,15 @@ const isLoggedIn =(req,res,next)=>{  // user authenticate hai ya nhi (loggedin h
 
 
 const validateProduct=(req,res,next)=>{
-    console.log("validate")
-    let {name,price,desc}=req.body;
-    const {error} =productSchema.validate({name,price,desc});
-    console.log(error);
+    console.log("validate");
+    let { name, price, desc } = req.body;
+    console.log(req.body); // Log the request body
+    const { error } = productSchema.validate({ name, price, desc });
+    console.log(error); // Log any validation errors
     
     // schema(product ke schema) ko validate kr rhe hai...validate method return two things  err and value but hum only err ko destructure krte hai
     if(error){
+        console.log("error in edit form")
         const msg = error.details.map((err)=>err.message).join(',');
         return res.render('error' , {err:msg});
     }
@@ -40,6 +42,22 @@ const validateProduct=(req,res,next)=>{
     next();// next() means err nhi aaya and product validate ho chuka hai toh ab aage badh jao means validateProduct middleware ke baad jo callback function hai(/in productRoutes.js) use run kro jo routes m pass kiya hai(/products ke routes m)
     // next is a middleware if err nhi aayega then next middleware chalega means aage ka callback fun run hoga
 };
+
+// const validateProduct = (req, res, next) => {
+//     console.log("validate");
+//     let { name, price, desc } = req.body;
+//     const { error } = productSchema.validate({ name, price, desc });
+//     console.log(error);
+
+//     if (error) {
+//         console.log("error in edit form");
+//         const msg = error.details.map((err) => err.message).join(',');
+//         return res.render('error', { err: msg });
+//     }
+
+//     next();
+// };
+
 
 
 const validateReview=(req,res,next)=>{

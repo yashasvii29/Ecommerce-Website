@@ -18,6 +18,7 @@ const LocalStrategy=require('passport-local');
 const User=require('./models/User');
 const MongoStore=require('connect-mongo');
 const mongoSanitize = require('express-mongo-sanitize');
+// const bodyParser = require('body-parser');
 // const upload =require('./multer');
 // const cloudinary = require('cloudinary');
 // const multer = require('multer');
@@ -44,7 +45,7 @@ app.set('views',path.join(__dirname,'views'));
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.urlencoded({extended:true}));  //body object ke data ko dekhne ke liye we will use the middleware
 app.use(methodOverride('_method'));
-app.use(mongoSanitize());
+app.use(express.json());  // json data
 // app.use(
 //     mongoSanitize({
 //       onSanitize: ({ req, key }) => {

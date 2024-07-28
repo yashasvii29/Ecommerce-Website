@@ -47,6 +47,16 @@ const uploadImageOnCloudinary = async(filePath,folderName) =>{
     console.log("Image uploaded to Cloudinary successfully");
   }
 }
-module.exports = uploadImageOnCloudinary;
+
+const deleteImageFromCloudinary = async (publicId) => {
+  try {
+      await cloudinary.uploader.destroy(publicId);
+      console.log('Image deleted from Cloudinary');
+  } catch (error) {
+      console.error('Error deleting image from Cloudinary:', error);
+      throw new Error('Failed to delete image from Cloudinary');
+  }
+};
+module.exports = {uploadImageOnCloudinary,deleteImageFromCloudinary};
 
 // pehle image public /images folder ke andar aayegi then cloudinary pr uplaod hogi and after that hamare server means images folder se delete ho jayegi and it will also display on the ui

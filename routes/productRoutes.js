@@ -17,7 +17,7 @@ router.get('/products/:id', isLoggedIn, showProduct);
 
 router.get('/products/:id/edit',isLoggedIn,isProductAuthor, editProductForm);
 
-router.patch('/products/:id', isLoggedIn, isProductAuthor, validateProduct, updateProduct);
+router.patch('/products/:id', isLoggedIn,upload.single('image'), isProductAuthor, validateProduct, updateProduct);
 
 router.delete('/products/:id',isLoggedIn,isProductAuthor,deleteProduct);
 
