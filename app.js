@@ -29,7 +29,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const dbURL = process.env.dbURL;
 mongoose.set('strictQuery',true);
 
-mongoose.connect(dbURL,{family:4}) 
+mongoose.connect(dbURL) 
 .then(()=>{
     console.log("DB Connected successfully") 
 })
