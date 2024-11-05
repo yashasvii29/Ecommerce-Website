@@ -3,7 +3,7 @@ Ecommerce website is a web based application which is built using mongodb, expre
 
 ## Table of Contents
 
-- [Chat-App](#Chat-App)
+- [Ecommerce-Website](#Ecommerce-Website)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Getting Started](#getting-started)
